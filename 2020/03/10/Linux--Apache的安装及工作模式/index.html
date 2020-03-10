@@ -1,0 +1,660 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"liu-bohua.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":true,"serollpercent":true,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux--Apache的安装及工作模式">
+<meta property="og:url" content="https://liu-bohua.github.io/2020/03/10/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/index.html">
+<meta property="og:site_name" content="十一&amp;博客">
+<meta property="og:description" content="架构">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019111610420021.png">
+<meta property="article:published_time" content="2020-03-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-10T06:30:15.473Z">
+<meta property="article:author" content="十一">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019111610420021.png">
+
+<link rel="canonical" href="https://liu-bohua.github.io/2020/03/10/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Linux--Apache的安装及工作模式 | 十一&博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">十一&博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">张国荣说过得不到回应的热情适度可止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">2</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liu-bohua.github.io/2020/03/10/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="十一">
+      <meta itemprop="description" content="只有一条路不能选择，那就是放弃的路。只有一条路不能拒绝，那就是成长的路。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="十一&博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux--Apache的安装及工作模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-10 00:00:00 / 修改时间：14:30:15" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>8.1k</span>
+            </span>
+            <div class="post-description">架构</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <pre><code>博文概要：
+1.安装apache服务及新版本的功能介绍。
+2.Apache的优化配置。
+3.Apache的工作模式。
+4.进程与线程的区别。</code></pre><p>一、常见的web服务器：Apache、Nginx、Tomcat</p>
+<pre><code>Apache服务器：apache软件基金会下开源的子项目，用于搭建web服务器，自身支持模块比较多，处理静态页面强，配置比较简单，自身不支持动态页面的处理。
+区别：
+    Apache：支持模块比较多、采用servlet处理模型，同步阻塞模型，工作模式多变，处于高并发的场景处理速度会比较慢，运行稳定。
+    Nginx：轻量级web服务器，自身支持模块少，需要借助第三方模块支持（Nginx官方就可以下载），采用epo11处理模型，异步非阻塞型，适合高并发场景，配置简单。
+    Tomcat：Apache软件基金会下开源的子项目, 也称为容器，主要处理java语言编写的页面，也可以处理html页面，并发连接小。</code></pre><p>二、Apache2.4.23版本：</p>
+<pre><code>新增模块：
+    Mod_proxy_fcgi（可提供fcgi代理）
+    Mod_ratelimit（限制用户带宽）
+    Mod_request（请求模块，对请求做过滤）
+    Mod_remoteip（匹配客户端的IP地址）
+    对于基于IP的访问控制做了修改，不再支持allow，deny，order机制，而是统一使用require 进行。
+
+新增以下几条新特性：
+    1、MPM 支持在运行时装载;不过要开启这种特性，在编译安装要启用这三种功能； --enable-mpms-shared=all  --with-mpm=event
+    2、支持 event 
+    3、支持异步读写 
+    4、在每个模块及每个目录上指定日志级别 
+    5、增强版的表达式分析器 
+    6、每请求配置：, 
+    7、毫秒级别的 keepalive timeout 
+    8、基于 FQDN 的虚拟主机不再需要 NameVirtualHost 指令 
+    9、支持使用自定义变量</code></pre><p>三、部署apache服务：<br>一台Linux，CentOS Linux 7.*版本。<br><a href="https://pan.baidu.com/s/1qi_-LgeYTji7M7P7TnOB0A" target="_blank" rel="noopener">下载</a>安装包及依赖包。</p>
+<pre><code>[root@localhost ~]# rz  #上传下载好的安装包及依赖包。
+
+[root@localhost ~]# ls
+anaconda-ks.cfg        initial-setup-ks.cfg   公共  文档
+apr-1.5.2.tar.gz       openssl-1.0.1u.tar.gz  模板  下载
+apr-util-1.5.4.tar.gz  pcre-8.39.tar.gz       视频  音乐
+httpd-2.4.23.tar.gz    zlib-1.2.8.tar.gz      图片  桌面
+[root@localhost ~]# tar zxf openssl-1.0.1u.tar.gz -C /usr/src
+[root@localhost ~]# tar zxf pcre-8.39.tar.gz -C /usr/src
+[root@localhost ~]# tar zxf zlib-1.2.8.tar.gz -C /usr/src
+[root@localhost ~]# tar zxf httpd-2.4.23.tar.gz -C /usr/src
+[root@localhost ~]# tar zxf apr-1.5.2.tar.gz -C /usr/src
+[root@localhost ~]# tar zxf apr-util-1.5.4.tar.gz -C /usr/src
+        #解压apache的依赖包及安装包（tar包）
+
+[root@localhost ~]# cd /usr/src/openssl-1.0.1u/
+[root@localhost openssl-1.0.1u]# ./config -fPIC --prefix=/usr/local/openssl enable-shared &amp;&amp; make &amp;&amp; make install
+[root@localhost openssl-1.0.1u]# cd ../pcre-8.39/
+[root@localhost pcre-8.39]# ./configure --prefix=/usr/local/pcre &amp;&amp; make &amp;&amp; make install
+[root@localhost pcre-8.39]# cd ../zlib-1.2.8/
+[root@localhost zlib-1.2.8]# ./configure --prefix=/usr/local/zlib &amp;&amp; make &amp;&amp; make install
+[root@localhost zlib-1.2.8]# cd ../apr-1.5.2/
+[root@localhost apr-1.5.2]# ./configure --prefix=/usr/local/apr &amp;&amp; make &amp;&amp; make install
+[root@localhost apr-1.5.2]# cd ../apr-util-1.5.4/
+[root@localhost apr-util-1.5.4]# ./configure --prefix=/usr/local/apr-util --with-apr=/usr/local/apr &amp;&amp; make &amp;&amp; make install
+        #解决安装httpd的依赖环境。
+
+[root@localhost apr-util-1.5.4]# cd ../httpd-2.4.23/
+[root@localhost httpd-2.4.23]# ./configure --prefix=/usr/local/http-2.4.23 --enable-so --enable-cgi --enable-cgid --enable-ssl --with-ssl=/usr/local/openssl --enable-rewrite --with-pcre=/usr/local/pcre --with-z=/usr/local/zlib --with-apr=/usr/local/apr --with-apr-util=/usr/local/apr-util -enable-modules=most --enable-mods-shared=most --enable-mpms-shared=all --with-mpm=event --enable-proxy --enable-proxy-fcgi --enable-expires --enable-deflate &amp;&amp; make &amp;&amp; make install
+        #编译安装httpd。
+
+[root@localhost httpd-2.4.23]# cd /usr/local/http-2.4.23/bin/
+[root@localhost bin]# ls
+ab         checkgid   envvars-std   htdbm     httpd       rotatelogs
+apachectl  dbmmanage  fcgistarter   htdigest  httxt2dbm
+apxs       envvars    htcacheclean  htpasswd  logresolve
+[root@localhost bin]# ln -s /usr/local/http-2.4.23/bin/* /usr/local/bin/
+        #将apache的启动执行文件做软链接。
+
+[root@localhost bin]# apachectl start 
+        #启动apache，启动的时候会出现一些提示信息，不影响启动。
+AH00558: httpd: Could not reliably determine the server&apos;s fully qualified domain name, using localhost.localdomain. Set the &apos;ServerName&apos; directive globally to suppress this message
+        #解决此问题，只需要再apache主配置文件里添加域名即可解决。配置文件里：ServerName 添加域名就可以了</code></pre><p>接下来apache就能正常访问了。</p>
+<pre><code>[root@localhost bin]# curl 192.168.2.20
+&lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
+[root@localhost bin]# netstat -anpt | grep 80
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN     112414/httpd       #查看端口是否启动。   </code></pre><p>安装apache时一些参数解释：</p>
+<pre><code>--enable-so：支持动态共享模块（即打开 DSO 支持）
+--enable-rewrite：支持 url 重写
+--enable-ssl：支持 ssl
+--with-ssl=/usr/local/openssl:指定 ssl 安装位置
+--enable-cgi：启用 cgi（通用网关接口）
+--enable-cgid:MPM 使用的是 event 或 worker 要启用 cgid（通用网管接口管理程序）
+--enable-modules=most:明确指明要静态编译到 httpd 二进制文件的模块，&lt;MODULE-LIST&gt;为空格分隔的模块名列表、all 或者 most，all 表示包含所有模块，most 表示包含大部分常用模 块
+--enable-mods-shared=most:明确指明要以 DSO 方式编译的模块，&lt;MODULE-LIST&gt;为空格分隔的模块名列表、all 或者 most，all 表示包含所有模 块，most 表示包含大部分模块
+--enable-mpms-shared=all:启用 MPM 所有支持的模式，这样 event、worker、prefork 就会以模块化的方式安装，要用哪个就在 httpd.conf 里配置就好了。
+--with-mpm=event:指定启用的 mpm 模式，默认使用 enevt 模式，在 apache 的早期版本 2.0默认 prefork,2.2 版本是 worker，2.4 版本是 event.
+--with-pcre=/usr/local/pcre:支持 pcre
+--with-z=/usr/local/zlib:使用 zlib 压缩库
+--with-apr=/usr/local/apr:指定 apr 的安装路径
+--with-apr-util=/usr/local/apr-util:指定 apr-util 的安装路径
+--enable-expires:激活或通过配置文件控制 HTTP 的“Expires:”和“Cache-Control:”头内容，即对网站图片、js、css 等内容，提供客户端浏览器缓存的设置。这个是 apache 调优的一个重要选项之一。
+--enable-deflate:提供对内容的压缩传输编码支持，支持压缩功能。在生产环境中，这是 apache 调优的一个重要选项之一。    </code></pre><p>四、Apache服务的三种工作模式详解。</p>
+<pre><code>Prefork模式（非线程型的，预派生子进程）
+Worker模式（多线程多进程）
+Event模式（多进程多线程加epoll处理模型）</code></pre><p>Prefork模式：<br>当 Apache 服务器启动后，mpm_prefork 模块会预先创建多个子进程(默认为 5 个)，每个子进程只有一个线程，当接收到客户端的请求后，mpm_prefork 模块再将请求转交给子进程处理，并且每个子进程同时只能用于处理单个请求。<br>如果当前的请求数将超过预先创建的子进程数时，mpm_prefork模块就会创建新的子进程来处理额外的请求。<br>Apache 总是试图保持一些备用的或者是空闲的子进程用于迎接即将到来的请求。这样客户端的请求就不需要在接收后等候子进程的产生。</p>
+<p>优缺点：</p>
+<pre><code>·优点：它的每个子进程都会独立处理对应的单个请求，这样，如果其中一个请求出现问题就不会影响到其他请求。Prefork 在效率上要比 Worker 要高。
+·缺点：因为每个请求对应一个子进程，因此其占用的系统资源相对其他两种模式而言较多，内存使用大得多不擅长处理高并发的场景。</code></pre><p>Worker模式：<br>    worker 使用了多进程和多线程的混合模式，worker 模式也同样会先预派生一些子进程，然后每个子进程创建一些线程，同时包括一个监听线程，每个请求过来会被分配到一个线程来服务。</p>
+<p>优缺点：</p>
+<pre><code>·优点：线程比起进程会更轻量，因为线程是通过共享父进程的内存空间，因此，内存的占用会减少一些，在高并发的场景下会比 prefork 有更多可用的线程，表现会更优秀一些；另外，如果一个线程出现了问题也会导致同一进程下的线程出现问题，如果是多个线程出现问题，也只是影响 Apache 的一部分，而不是全部。
+·缺点：由于用到多进程多线程，需要考虑到线程的安全了，在使用 keep-alive 长连接的时候，某个线程会一直被占用，即使中间没有请求，需要等待到超时才会被释放（该问题在 prefork 模式下也存在）。</code></pre><p>Event模式：<br>这是 Apache 最新的工作模式，是 worker 模式的变种，它把服务进程从连接中分离出来，一worker 模式不同的是在于它解决了 keep-alive 长连接的时候占用线程资源被浪费的问题，在event 工作模式中，会有一些专门的线程用来管理这些 keep-alive 类型的线程，当有真实请求过来的时候，将请求传递给服务器的线程，执行完毕后，又允许它释放。</p>
+<p>优缺点：</p>
+<pre><code>·优点：增强了在高并发场景下的请求处理。
+·缺点：event 模式不能很好的支持 https 的访问（HTTP 认证相关的问题）。</code></pre><p>五、刚刚上面提到了线程跟进程。下面来解释一下线程和进程的区别。</p>
+<pre><code>线程是指进程内的一个执行单元,也是进程内的可调度实体。</code></pre><p>线程与进程的区别：</p>
+<pre><code>(1)地址空间:进程内的一个执行单元;进程至少有一个线程;它们共享进程的地址空间;而进程有自己独立的地址空间。
+(2)资源拥有:进程是资源分配和拥有的单位,同一个进程内的线程共享进程的资源。
+(3)线程是处理器调度的基本单位,但进程不是。
+(4)二者均可并发执行。</code></pre><p>进程和线程都是由操作系统所体会的程序运行的基本单元，系统利用该基本单元实现系统对应用的并发性。<br>简而言之,一个程序至少有一个进程,一个进程至少有一个线程。<br>线程的划分尺度小于进程，使得多线程程序的并发性高。<br>另外，进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率。</p>
+<p>六、修改apache的工作模式：</p>
+<pre><code>[root@localhost ~]# apachectl -M
+core_module (static)
+ so_module (static)
+http_module (static)
+authn_file_module (shared)
+authn_core_module (shared)
+ authz_host_module (shared)
+ ...
+     #查看apache所加载的模块（apachectl -M或httpd -M）
+ [root@localhost ~]# apachectl -V
+ ...
+ Architecture:   64-bit
+Server MPM:     event  #这里便是apache的当前工作模式
+threaded:     yes (fixed thread count)
+forked:     yes (variable process count)
+...
+    #查看apache当前的工作模式（httpd -V或apachectl -V）
+[root@localhost ~]# cd /usr/local/http-2.4.23/conf/
+[root@localhost conf]# vim httpd.conf 
+    #apache的主配置文件/usr/local/http-2.4.23/conf/httpd.conf
+...
+Include conf/extra/httpd-mpm.conf
+...            #查询httpd-mpm.conf，去掉开头注释。
+#LoadModule mpm_event_module modules/mod_mpm_event.so
+LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
+        #我这里默认开启了Event模式，所以将Event模块加注释，然后将Prefork模式去掉。
+#LoadModule mpm_worker_module modules/mod_mpm_worker.so</code></pre><p><img src="https://img-blog.csdnimg.cn/2019111610420021.png" alt="在这里插入图片描述"><br>这就是apache的三种工作模式，若想开启哪个模式，去掉注释即可。但是相应的，需要将原来的工作模式注释掉。</p>
+<pre><code>修改完成后，直接保存退出，重启服务即可。
+[root@localhost conf]# apachectl restart
+        #重启apache服务。
+[root@localhost conf]# apachectl -V
+        #查看当前工作模式。
+...
+Architecture:   64-bit
+Server MPM:     prefork
+  threaded:     no
+forked:     yes (variable process count)
+...
+        #这样就修改了apache的工作模式了。</code></pre><p>修改apache的工作模式，要根据公司的需求适合哪种工作模式来进行修改。</p>
+<p>七、Apache的优化配置。<br>    上面修改工作模式，其实是httpd-mpm.conf定义apache每个工作模式的配置文件。<br>其中httpd-mpm.conf文件中也可以进行优化（启动进程数、空闲进程）<br>接下来解释优化apache服务的参数：</p>
+<pre><code>[root@localhost conf]# cat extra/httpd-mpm.conf 
+...
+# prefork MPM
+...
+&lt;IfModule mpm_prefork_module&gt;
+StartServers             5    #启动的子进程数，当小于空闲子进程时，第一秒启动1个子进程，以二的次方启动子进程。1+2+4+8....
+MinSpareServers          5    #最小空闲子进程。
+MaxSpareServers         10    #最大空闲子进程，当小于空闲子进程时值为空闲子进程的个数+1，例如：最小5，最大3，最终结果5+1=6
+MaxRequestWorkers      250    #所有子进程能够承载并发量，通过是物理内存的一半，4G内存，4096/2。默认最大为256，如果设置成大于256需要使用ServerLimit进行声明，ServerLimit最大为20万。
+MaxConnectionsPerChild   0    #每个子进程处理完数据后进程永不销毁，1代表每个子进程处理一个连接后子进程进行销毁。
+&lt;/IfModule&gt;
+...
+# worker MPM
+...
+&lt;IfModule mpm_worker_module&gt;
+StartServers             3    #启动的子进程数，启动和prefork相同，第一秒启动1个子进程，以二的次方启动子进程，1+2+4+8.....默认最大可以启动16个子进程，如果超过这个值需要使用ServerLimit进行声明，ServerLimit最大为2万。
+MinSpareThreads         75    #最小空闲线程。
+MaxSpareThreads        250     #最大空闲线程。
+ThreadsPerChild         25    #每个子进程数可生成的线程数量，默认最大64，如果大于64需要使用ThreadLimit声明，ThreadLimit的最大值为2万
+MaxRequestWorkers      400    #所有线程能够承载并发量。
+MaxConnectionsPerChild   0    #和prefork
+&lt;/IfModule&gt;
+...
+# event MPM
+...
+&lt;IfModule mpm_event_module&gt;
+StartServers             3    #
+MinSpareThreads         75
+MaxSpareThreads        250
+ThreadsPerChild         25
+MaxRequestWorkers      400
+MaxConnectionsPerChild   0
+&lt;/IfModule&gt;</code></pre><p>上述解释，要根据现实工作环境，来进行优化。</p>
+
+    </div>
+
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>十一
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://liu-bohua.github.io/2020/03/10/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/" title="Linux--Apache的安装及工作模式">https://liu-bohua.github.io/2020/03/10/Linux--Apache的安装及工作模式/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/10/hello-world/" rel="next" title="Hello World">
+      Hello World <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="十一"
+      src="/images/author.jpg">
+  <p class="site-author-name" itemprop="name">十一</p>
+  <div class="site-description" itemprop="description">只有一条路不能选择，那就是放弃的路。只有一条路不能拒绝，那就是成长的路。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Liu-Bohua/Liu-Bohua.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Liu-Bohua&#x2F;Liu-Bohua.github.io" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bohua101" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bohua101" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">十一</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">8k</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/schemes/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
