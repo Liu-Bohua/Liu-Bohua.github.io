@@ -1,0 +1,627 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 4.2.0">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/font-awesome.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"liu-bohua.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":true,"serollpercent":true,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
+
+  <meta name="description" content="架构">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Linux--Apache的安装及工作模式">
+<meta property="og:url" content="https://liu-bohua.github.io/2020/03/10/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="十一&amp;博客">
+<meta property="og:description" content="架构">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2019110816190733.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191108213405129.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20191108214319663.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="article:published_time" content="2020-03-09T16:00:00.000Z">
+<meta property="article:modified_time" content="2020-03-10T08:38:47.838Z">
+<meta property="article:author" content="十一">
+<meta property="article:tag" content="架构">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019110816190733.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+
+<link rel="canonical" href="https://liu-bohua.github.io/2020/03/10/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true
+  };
+</script>
+
+  <title>Linux--Apache的安装及工作模式 | 十一&博客</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <div>
+      <a href="/" class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">十一&博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+        <p class="site-subtitle">张国荣说过得不到回应的热情适度可止</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+<nav class="site-nav">
+  
+  <ul id="menu" class="menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-fw fa-home"></i>首页</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-fw fa-user"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-fw fa-tags"></i>标签<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-fw fa-th"></i>分类<span class="badge">1</span></a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-fw fa-archive"></i>归档<span class="badge">2</span></a>
+
+  </li>
+  </ul>
+
+</nav>
+</div>
+    </header>
+<a href="https://github.com/Liu-Bohua/Liu-Bohua.github.io" target="_blank" rel="noopener" class="github-corner" aria-label="View source on GitHub"><svg width="80" height="80" viewBox="0 0 250 250" style="fill:#fff; color:#151513; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true"><path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path><path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2" fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path><path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z" fill="currentColor" class="octo-body"></path></svg></a><style>.github-corner:hover .octo-arm{animation:octocat-wave 560ms ease-in-out}@keyframes octocat-wave{0%,100%{transform:rotate(0)}20%,60%{transform:rotate(-25deg)}40%,80%{transform:rotate(10deg)}}@media (max-width:500px){.github-corner:hover .octo-arm{animation:none}.github-corner .octo-arm{animation:octocat-wave 560ms ease-in-out}}</style>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content">
+            
+
+  <div class="posts-expand">
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://liu-bohua.github.io/2020/03/10/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/author.jpg">
+      <meta itemprop="name" content="十一">
+      <meta itemprop="description" content="只有一条路不能选择，那就是放弃的路。只有一条路不能拒绝，那就是成长的路。">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="十一&博客">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Linux--Apache的安装及工作模式
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2020-03-10 00:00:00 / 修改时间：16:38:47" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a>
+                </span>
+            </span>
+
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span><br>
+            <span class="post-meta-item" title="本文字数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-file-word-o"></i>
+              </span>
+                <span class="post-meta-item-text">本文字数：</span>
+              <span>3.4k</span>
+            </span>
+            <div class="post-description">架构</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <p>首先我们先来介绍一下http协议，相信大家都不陌生。<br>一、<strong>http协议介绍</strong></p>
+<pre><code>    Hyper Text Transfer Protocol 超文本传输协议，是互联网应用最为广泛的一种网络协议，主要用于 Web 服务。通过计算机处理文本信息，格式为 HTML（Hyper Text Mark Language）超文本标记语言来实现。
+
+    http：超文本传输协议 ，通常使用在web应用上。    
+    html：超文本标记语言。
+    当然这都是官方语言，通俗点说，当我们访问一个网页时，这时就用到了http协议，只是我们的关注点不在这里而已。
+    http协议的版本0.9、1.0、1.1、2.0，不过0.9版本已经淘汰 ，应用最广泛的版本为1.0 和1.1 版本。
+    http0.9 版本 只支持html界面
+    1.0版本：**引入MIME（多用途互联网邮件扩展）  支持keep-alive持久连接   支持页面缓存**
+    **1.1 版本是1.0版本的升级，支持更多的连接方式、优化了持久连接，优化页面缓存。**
+    http 2.0：提供了 HTTP 语义优化的传输，spdy : google 引入了的一个技术，能够加速 http 数据交互，尤其是使用 ssl 加速机制，但是 spdy 现在用的还不多。
+目前我们用到最广泛的HTTP协议版本就是1.0和1.1版本了。</code></pre><p>二、接下来我们说一下，我们浏览网页时常见的网页类型有哪几种呢？</p>
+<pre><code>动态的页面和静态的页面？其实还有一种。
+常见的网页页面类型：  **静态页面  动态页面  伪静态页面**
+静态页面常见的后缀：
+        文本：*html  htm  txt  css  doc*
+        图片：*gif  jpg  png*
+        视频;  *mp4  flv*
+这些后缀有些我们不陌生把。
+**静态页面的特点**：开发人员编写什么就是什么，由开发人员预先编写好的，存放在文件系统当中，响应速度快，页面维护比较麻烦，数据交互性差，容易被搜索引擎收录。
+
+**动态页面常见的后缀**：*php  jsp   asp net*
+**动态页面的特点**：web服务器自身不支持动态页面的处理，需要有专门的解释器来进行完成，页面数据多变，页面维护比较简单，响应速度慢，数据有交互性，页面访问时包含特殊符号  ？ % &amp; ，不能被搜索引擎收录。
+**伪静态页面**：将动态页面伪装成静态页面，被搜索引擎收录，消耗硬件资源。</code></pre><p>三、<strong>http协议报文：请求报文与响应报文</strong></p>
+<pre><code>1.**request  Message（请求报文）**
+**客户端--服务器端
+由客户端向服务器端发出请求，不同的网站页面用于请求不同的资源（html文档）**
+当我们打开百度时，在网页输入关键字，回车时，就是相当于我们在请求服务器了。
+2.**response  Message（响应报文）**
+**服务器端--客户端
+是服务器予以响应客户端的请求**
+我们回车以后，显示出各种结果，这就是服务器给我们的回应。</code></pre><p><strong>请求报文的格式</strong> </p>
+<pre><code>请求行+请求首部+空白行+请求实体
+请求行里面的内容： 请求的方式    请求的URL   访问采用的http协议的版本
+请求首部包含一个或者多个。
+请求实体：请求的是哪个页面。</code></pre><p><img src="https://img-blog.csdnimg.cn/2019110816190733.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>响应报文格式</strong></p>
+<pre><code>起始行+响应首部+空白行+响应实体
+起始行里面的内容：响应时采用的http协议版本    响应的状态码   状态码的简略信息
+响应首部包含一个或者多个
+响应实体:真正访问页面包含的内容。</code></pre><p>四、<strong>常见的请求方式  get  put  pust  delete</strong><br><strong>常见状态码</strong>：</p>
+<pre><code>400往上就是访问页面失败。   
+200访问成功。  
+201上传成功。  
+301永久重定向。   
+304资源在转发的过程中没有被修改。 
+401网页认证失败。  
+403权限被拒绝。
+404资源未找到 。 
+502通常是动态服务器处理不了数据或者web配置文件发生错误。
+503服务暂时不可用</code></pre><p>HTTP 首部介绍</p>
+<pre><code>•通用首部
+• 请求首部
+• 响应首部
+• 实体首部：专门用来表示实体中资源内部的类型、长度、编码格式等
+• 扩展首部：非标准首部，可有程序员自行创建</code></pre><p>通用首部</p>
+<pre><code>• Connection：定义 C/S 之间关于请求、响应的有关选项
+在 http1.0 的时候，如果他想使用持久连接，那么他所设置的选项即为
+Connection：keep-alive
+• Cache-Control：缓存控制，实现更精细的缓存控制方式。在 http 1.1 上比较常见</code></pre><p>请求首部</p>
+<pre><code>• Client-IP ：客户端 IP 地址
+• Host ：请求的主机，这在实现基于主机名的虚拟主机时很有用
+• Referer ：指明了请求当前资源原始资源的 URL，使用 referer 是可以防盗链
+• User-Agent：用户代理，一般而言是浏览器
+• Accept 首部：指客户端可以接受哪些编码的类型
+        ▪ Accept：服务端能够发送的媒体的类型
+        ▪ Accetp-Charset：接收的字符集
+        ▪ Accept-Encoding：编码格式
+        ▪ Accept-Lanage：所能接受的语言编码格式
+• 条件式请求首部：（在 http1.1 中才会用到）
+    当发送请求时，先问问对方是否满足条件，如果满足条件就请求，不满足就不请求 
+• 跟安全相关的请求：
+    ▪ Authorization
+    ▪ Cookie</code></pre><p>响应首部</p>
+<pre><code>• Age：资源响应给你之后可以使用的时长
+• Server：向客户端说明自己用到的程序名称和版本
+• 协商类的首部：
+▪ Vary：首部列表，服务器会根据此列表挑选最适合的版本发给客户端
+• 跟安全相关：
+▪ WWW-Authentication
+▪ Set-Cookie</code></pre><p>实体首部</p>
+<pre><code>• Location：指明资源的新位置，实现 302 响应码时通常会用到
+• Allow：允许对此资源使用的请求方法
+• 内容相关的首部
+    ▪ Content-Encoding
+    ▪ Content-Language
+    ▪ Content-Length
+    ▪ Content-Location：内容所在的位置
+    ▪ Content-Type
+• 缓存相关：
+    ▪ ETag：扩展标签/标记
+    ▪ Expires：过期时间
+    ▪ Last-Modified：最后修改时间</code></pre><p>五、<br>HTTP 的事务</p>
+<pre><code>包含了一个 HTTP 请求，和对应请求的响应就叫做一个 http 事务，也可以理解 http 事务就是一个完整的 HTTP 请求和 HTTP 响应的过程。
+http 协议默认情况下每个事务都会打开和关闭一个新的连接，所以会相当耗费时间和带宽，
+由于 TCP 慢启动特性，所以每条新的连接的性能本身就会有所降低，所以可打开的并行连接的数量上限是有限的。所以使用持久连接这种模式比默认情况下不使用持久连接的方式会好一点，他的好处表现在其请求和 tcp 断开的过程所消耗的时间会被减少。</code></pre><p>HTTP 资源</p>
+<pre><code>资源就是通过 HTTP 协议可以让用户通过浏览器或用户代理能够通过基于 http 协议向服务器端请求并获取的内容，像 html 文档，一张图片等等。
+资源类型：是通过 MIME 进行标记
+格式：major/minor 主标记和次标记</code></pre><p>常用的 MIME 类型</p>
+<pre><code>MIME 类型                                    文件类型
+test/html                                 html、htm 文本类型
+text/plain                                 text 文本类型
+image/jpeg                                 jpeg 图像类型
+image/gif                                 gif 图像类型
+vedio/mpeg4                                 音频标记类型
+application/vnd.ms-powerpoint             动态资源的标记方式</code></pre><p>URI 和 URL<br>    • URI(Uniform Resource Identifier) 同一资源标示符</p>
+<pre><code>用于标识某一互联网资源名称的字符串，通过这种标识来允许你用户对资源可通过特定的协议进行交互操作。
+在 Web 上可用的每种资源，包括 HTML 文档、图像、视频片段、程序等， 由一个通用资源标识符进行定位。所以我们可以使用URI 来标识每个资源的名称</code></pre><p>• URL（Uniform Resource Locator）(统一资源定位符）</p>
+<pre><code>用于描述一个特定服务器上某资源的特定位置。</code></pre><p>CGI</p>
+<p>Common Gateway Interface 通用网关接口<br>fastCGI 快速通用网关接口</p>
+<pre><code>web 服务器发现需要执行脚本了，就通过 CGI 协议跟后端的应用程序打交道，
+把用户的请求动态交给服务器，这个服务器的结果通过 CGI 协议返回给 http 服务器。</code></pre><p>六、一次 Web 资源请求的具体过程。</p>
+<ol>
+<li>客户端在 Web 浏览器输入需要访问的地址</li>
+<li>Web 浏览器会请求 DNS 服务器，查询解析到指定域名和 Web 服务器的地址</li>
+<li>客户端与请求的 Web 服务器端建立连接（TCP 三次握手）</li>
+<li>TCP 建立成功之后，发起 HTTP 请求</li>
+<li>服务器端收到客户端 HTTP 请求之后，会处理该请求</li>
+<li>处理客户端指定请求的资源</li>
+<li>服务器构建响应报文，响应给客户端</li>
+<li>服务器端将此信息记录到日志中</li>
+</ol>
+<p>打开浏览器F12，然后再发起http请求，缓存获取到URL：</p>
+<p>``响应报文<br><img src="https://img-blog.csdnimg.cn/20191108213405129.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>关于cookies解释：<a href="https://www.cnblogs.com/yonyong/p/9337712.html" target="_blank" rel="noopener">cookies和session会话介绍</a></p>
+<p>请求报文<br><img src="https://img-blog.csdnimg.cn/20191108214319663.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+
+    </div>
+
+    
+    
+    
+
+<div>
+  
+    <div>
+    
+        <div style="text-align:center;color: #ccc;font-size:14px;">-------------本文结束<i class="fa fa-paw"></i>感谢您的阅读-------------</div>
+    
+</div>
+
+  
+</div>
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>十一
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://liu-bohua.github.io/2020/03/10/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/" title="Linux--Apache的安装及工作模式">https://liu-bohua.github.io/2020/03/10/Linux知识--HTTP协议分析/</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item"></div>
+      <div class="post-nav-item">
+    <a href="/2020/03/10/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/" rel="next" title="Linux--Apache的安装及工作模式">
+      Linux--Apache的安装及工作模式 <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+  </div>
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="十一"
+      src="/images/author.jpg">
+  <p class="site-author-name" itemprop="name">十一</p>
+  <div class="site-description" itemprop="description">只有一条路不能选择，那就是放弃的路。只有一条路不能拒绝，那就是成长的路。</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">2</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">分类</span>
+      </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">标签</span>
+      </div>
+  </nav>
+</div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Liu-Bohua/Liu-Bohua.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Liu-Bohua&#x2F;Liu-Bohua.github.io" rel="noopener" target="_blank"><i class="fa fa-fw fa-github"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bohua101" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bohua101" rel="noopener" target="_blank"><i class="fa fa-fw fa-crosshairs"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
+
+
+
+      </div>
+
+ 
+           <div>
+              <iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="//music.163.com/outchain/player?type=2&id=1384820459&auto=1&height=66"></iframe>
+           </div>
+
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">十一</span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item-icon">
+      <i class="fa fa-area-chart"></i>
+    </span>
+      <span class="post-meta-item-text">站点总字数：</span>
+    <span title="站点总字数">12k</span>
+</div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  
+  <script color='0,0,0' opacity='0.5' zIndex='-1' count='150' src="/lib/canvas-nest/canvas-nest.min.js"></script>
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+   <canvas class="fireworks" style="position: fixed;left: 0;top: 0;z-index: 1; pointer-events: none;" ></canvas> 
+   <script type="text/javascript" src="//cdn.bootcss.com/animejs/2.2.0/anime.min.js"></script> 
+   <script type="text/javascript" src="/js/schemes/fireworks.js"></script>
+
+<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
+</html>
+
