@@ -20,24 +20,32 @@
     var CONFIG = {"hostname":"liu-bohua.github.io","root":"/","scheme":"Gemini","version":"7.7.2","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"b2t":true,"serollpercent":true,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="架构">
+  <meta name="description" content="Python">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux知识--HTTP协议分析">
-<meta property="og:url" content="https://liu-bohua.github.io/2020/03/10/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/index.html">
+<meta property="og:title" content="Python安装：Windows及Linux安装">
+<meta property="og:url" content="https://liu-bohua.github.io/2020/03/10/Python%E5%AE%89%E8%A3%85%EF%BC%9AWindows%E5%8F%8ALinux%E5%AE%89%E8%A3%85/index.html">
 <meta property="og:site_name" content="十一&amp;博客">
-<meta property="og:description" content="架构">
+<meta property="og:description" content="Python">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2019110816190733.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191108213405129.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/20191108214319663.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200310182507178.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020031018253489.png">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200310182551692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200310182604782.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020031018261792.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200310182633245.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200310182645285.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200310182659584.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020031018291589.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/20200310182923928.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta property="og:image" content="https://img-blog.csdnimg.cn/2020031018293730.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
 <meta property="article:published_time" content="2020-03-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-10T11:00:17.530Z">
+<meta property="article:modified_time" content="2020-03-10T10:58:39.248Z">
 <meta property="article:author" content="十一">
-<meta property="article:tag" content="架构">
+<meta property="article:tag" content="Python">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019110816190733.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
+<meta name="twitter:image" content="https://img-blog.csdnimg.cn/20200310182507178.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70">
 
-<link rel="canonical" href="https://liu-bohua.github.io/2020/03/10/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/">
+<link rel="canonical" href="https://liu-bohua.github.io/2020/03/10/Python%E5%AE%89%E8%A3%85%EF%BC%9AWindows%E5%8F%8ALinux%E5%AE%89%E8%A3%85/">
 
 
 <script id="page-configurations">
@@ -49,7 +57,7 @@
   };
 </script>
 
-  <title>Linux知识--HTTP协议分析 | 十一&博客</title>
+  <title>Python安装：Windows及Linux安装 | 十一&博客</title>
   
 
 
@@ -170,7 +178,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block " lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://liu-bohua.github.io/2020/03/10/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/">
+    <link itemprop="mainEntityOfPage" href="https://liu-bohua.github.io/2020/03/10/Python%E5%AE%89%E8%A3%85%EF%BC%9AWindows%E5%8F%8ALinux%E5%AE%89%E8%A3%85/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/author.jpg">
@@ -183,7 +191,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Linux知识--HTTP协议分析
+          Python安装：Windows及Linux安装
         </h1>
 
         <div class="post-meta">
@@ -194,7 +202,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2020-03-10 00:00:00 / 修改时间：19:00:17" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
+              <time title="创建时间：2020-03-10 00:00:00 / 修改时间：18:58:39" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -202,7 +210,7 @@
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a>
+                  <a href="/categories/Python/" itemprop="url" rel="index"><span itemprop="name">Python</span></a>
                 </span>
             </span>
 
@@ -219,9 +227,9 @@
                 <i class="fa fa-file-word-o"></i>
               </span>
                 <span class="post-meta-item-text">本文字数：</span>
-              <span>3.4k</span>
+              <span>2.3k</span>
             </span>
-            <div class="post-description">架构</div>
+            <div class="post-description">Python</div>
 
         </div>
       </header>
@@ -232,130 +240,21 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>首先我们先来介绍一下http协议，相信大家都不陌生。<br>一、<strong>http协议介绍</strong></p>
-<pre><code>    Hyper Text Transfer Protocol 超文本传输协议，是互联网应用最为广泛的一种网络协议，主要用于 Web 服务。通过计算机处理文本信息，格式为 HTML（Hyper Text Mark Language）超文本标记语言来实现。
+        <p><strong>初识Python</strong><br>一、简介<br>1989年圣诞节期间，在阿姆斯特丹，Guido为了打发圣诞节的无趣，决心开发一个新的脚本解释程序，作为ABC语言的一种继承。</p>
+<p>Python是一种跨平台的计算机程序设计语言。是一种面向对象的动态类型语言，最初被设计用于编写自动化脚本，随着版本的不断更新和语言新功能的添加，越多被用于独立的、大型项目的开发。</p>
+<p>Python应用领域：<br>Python是一种解释型脚本语言，可以应用于以下领域：<br>1.web全栈<br>2.人工智能<br>3.机器学习<br>4.网络爬虫<br>5.数据分析<br>6.算法工程师<br>7.游戏开发<br>8.信息安全<br>9.自动化测试<br>10.自动化运维</p>
+<p>Python在设计上坚持了清晰划一的风格，这使得Python成为一门易读、易维护，并且被大量用户所欢迎的、用途广泛的语言。</p>
+<p>二、安装Python<br>1.Windows系统安装<br>1）下载安装包，Python官网<a href="https://www.python.org/" target="_blank" rel="noopener">https://www.python.org/</a><br><img src="https://img-blog.csdnimg.cn/20200310182507178.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>下载链接地址为：<a href="https://www.python.org/downloads/release/python-382/" target="_blank" rel="noopener">https://www.python.org/downloads/release/python-382/</a><br>下载完成后，会在下载的指定目录中有Python的安装包，双击安装即可。<br><img src="https://img-blog.csdnimg.cn/2020031018253489.png" alt="在这里插入图片描述"><br>安装：<br>默认安装没有勾选“自动添加Python的环境变量”需要手动勾选<br><img src="https://img-blog.csdnimg.cn/20200310182551692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>点击“Customize installation”自定义安装。<br><img src="https://img-blog.csdnimg.cn/20200310182604782.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>点击“Next”<br><img src="https://img-blog.csdnimg.cn/2020031018261792.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>自定义目录，不要把Python抽象安装到含有中文的目录中<br><img src="https://img-blog.csdnimg.cn/20200310182633245.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>安装完成后，点击“Close”关闭窗口：<br><img src="https://img-blog.csdnimg.cn/20200310182645285.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>2）运行Python程序，测试：<br>Win+R打开运行输入CMD，打开命令行，输入python，查看：<br><img src="https://img-blog.csdnimg.cn/20200310182659584.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>出现以上内容则说明安装成功。<br>退出执行exit()或者CTRL+Z回车即可退出。</p>
+<p>2.Linux系统安装。<br>1）在Linux系统中默认安装2.7版本的Python，我们可以进入官网下载Python的源代码包进行升级安装：<br>安装之前下载依赖库：</p>
+<figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># yum -y install wget gcc zlib-devel bzip2-devel openssl-devel ncurses-devel sqlite-devel readline-devel tk-devel gdbm-devel db4-devel libpcap-devel xz-devel libffi-devel  </span></span><br><span class="line">已加载插件：fastestmirror, langpacks  </span><br><span class="line">Determining fastest mirrors</span><br></pre></td></tr></table></figure>
+<p>2）下载Python源代码包：<br><img src="https://img-blog.csdnimg.cn/2020031018291589.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img src="https://img-blog.csdnimg.cn/20200310182923928.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>下拉找到Python源码包：<br><img src="https://img-blog.csdnimg.cn/2020031018293730.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>右击复制链接，回到终端下载：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">root@</span>localhost ~]# wget https:<span class="comment">//www.python.org/ftp/python/3.8.2/Python-3.8.2.tgz  </span></span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# ls  </span><br><span class="line">Python<span class="number">-3.8</span><span class="number">.2</span>.tgz</span><br></pre></td></tr></table></figure>
+<p>解压安装包，并进入编译安装：<br>过程会有点漫长~，请耐心等待。</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">root@</span>localhost ~]# tar -zxvf Python<span class="number">-3.8</span><span class="number">.2</span>.tgz   </span><br><span class="line">  </span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# cd Python<span class="number">-3.8</span><span class="number">.2</span>/  </span><br><span class="line">  </span><br><span class="line">在./configure操作前，先进行配置，设置语言：  </span><br><span class="line">[<span class="symbol">root@</span>localhost Python<span class="number">-3.8</span><span class="number">.2</span>]# export LANG=zh_CN.UTF<span class="number">-8</span>  </span><br><span class="line">[<span class="symbol">root@</span>localhost Python<span class="number">-3.8</span><span class="number">.2</span>]# export LANGUAGE=zh_CN.UTF<span class="number">-8</span>  </span><br><span class="line">  </span><br><span class="line">进行编译安装：  </span><br><span class="line">[<span class="symbol">root@</span>localhost Python<span class="number">-3.8</span><span class="number">.2</span>]# ./configure --prefix=/usr/local/python382 --enable-optimizations &amp;&amp; make &amp;&amp; make install</span><br></pre></td></tr></table></figure>
+<p>3）修改用户主目录下名为.bash_profile的文件，配置PATH环境变量并使其生效：</p>
+<figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">root@</span>localhost ~]# python3 --version  </span><br><span class="line">Python <span class="number">3.8</span><span class="number">.2</span>  </span><br><span class="line">  </span><br><span class="line">先输入python进入交互式环境，执行下面代码检查Python版本：  </span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# python  </span><br><span class="line">Python <span class="number">2.7</span><span class="number">.5</span> (<span class="keyword">default</span>, Oct <span class="number">30</span> <span class="number">2018</span>, <span class="number">23</span>:<span class="number">45</span>:<span class="number">53</span>)   </span><br><span class="line">  </span><br><span class="line">&gt;&gt;&gt; <span class="keyword">import</span> sys  </span><br><span class="line">&gt;&gt;&gt; print(sys.version_info)  </span><br><span class="line">sys.version_info(major=<span class="number">2</span>, minor=<span class="number">7</span>, micro=<span class="number">5</span>, releaselevel=<span class="string">'final'</span>, serial=<span class="number">0</span>)  </span><br><span class="line">&gt;&gt;&gt; print(sys.version)  </span><br><span class="line"><span class="number">2.7</span><span class="number">.5</span> (<span class="keyword">default</span>, Oct <span class="number">30</span> <span class="number">2018</span>, <span class="number">23</span>:<span class="number">45</span>:<span class="number">53</span>)    </span><br><span class="line">  </span><br><span class="line">CTRL+D退出。  </span><br><span class="line">  </span><br><span class="line">再输入python3进入交互式环境，再执行以下代码检查Python版本：  </span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# python3  </span><br><span class="line">Python <span class="number">3.8</span><span class="number">.2</span> (<span class="keyword">default</span>, Mar  <span class="number">9</span> <span class="number">2020</span>, <span class="number">14</span>:<span class="number">14</span>:<span class="number">16</span>)   </span><br><span class="line">&gt;&gt;&gt; <span class="keyword">import</span> sys  </span><br><span class="line">&gt;&gt;&gt; print(sys.version_info)  </span><br><span class="line">sys.version_info(major=<span class="number">3</span>, minor=<span class="number">8</span>, micro=<span class="number">2</span>, releaselevel=<span class="string">'final'</span>, serial=<span class="number">0</span>)  </span><br><span class="line">&gt;&gt;&gt; print(sys.version)  </span><br><span class="line"><span class="number">3.8</span><span class="number">.2</span> (<span class="keyword">default</span>, Mar  <span class="number">9</span> <span class="number">2020</span>, <span class="number">14</span>:<span class="number">14</span>:<span class="number">16</span>)</span><br></pre></td></tr></table></figure>
 
-    http：超文本传输协议 ，通常使用在web应用上。    
-    html：超文本标记语言。
-    当然这都是官方语言，通俗点说，当我们访问一个网页时，这时就用到了http协议，只是我们的关注点不在这里而已。
-    http协议的版本0.9、1.0、1.1、2.0，不过0.9版本已经淘汰 ，应用最广泛的版本为1.0 和1.1 版本。
-    http0.9 版本 只支持html界面
-    1.0版本：**引入MIME（多用途互联网邮件扩展）  支持keep-alive持久连接   支持页面缓存**
-    **1.1 版本是1.0版本的升级，支持更多的连接方式、优化了持久连接，优化页面缓存。**
-    http 2.0：提供了 HTTP 语义优化的传输，spdy : google 引入了的一个技术，能够加速 http 数据交互，尤其是使用 ssl 加速机制，但是 spdy 现在用的还不多。
-目前我们用到最广泛的HTTP协议版本就是1.0和1.1版本了。</code></pre><p>二、接下来我们说一下，我们浏览网页时常见的网页类型有哪几种呢？</p>
-<pre><code>动态的页面和静态的页面？其实还有一种。
-常见的网页页面类型：  **静态页面  动态页面  伪静态页面**
-静态页面常见的后缀：
-        文本：*html  htm  txt  css  doc*
-        图片：*gif  jpg  png*
-        视频;  *mp4  flv*
-这些后缀有些我们不陌生把。
-**静态页面的特点**：开发人员编写什么就是什么，由开发人员预先编写好的，存放在文件系统当中，响应速度快，页面维护比较麻烦，数据交互性差，容易被搜索引擎收录。
-
-**动态页面常见的后缀**：*php  jsp   asp net*
-**动态页面的特点**：web服务器自身不支持动态页面的处理，需要有专门的解释器来进行完成，页面数据多变，页面维护比较简单，响应速度慢，数据有交互性，页面访问时包含特殊符号  ？ % &amp; ，不能被搜索引擎收录。
-**伪静态页面**：将动态页面伪装成静态页面，被搜索引擎收录，消耗硬件资源。</code></pre><p>三、<strong>http协议报文：请求报文与响应报文</strong></p>
-<pre><code>1.**request  Message（请求报文）**
-**客户端--服务器端
-由客户端向服务器端发出请求，不同的网站页面用于请求不同的资源（html文档）**
-当我们打开百度时，在网页输入关键字，回车时，就是相当于我们在请求服务器了。
-2.**response  Message（响应报文）**
-**服务器端--客户端
-是服务器予以响应客户端的请求**
-我们回车以后，显示出各种结果，这就是服务器给我们的回应。</code></pre><p><strong>请求报文的格式</strong> </p>
-<pre><code>请求行+请求首部+空白行+请求实体
-请求行里面的内容： 请求的方式    请求的URL   访问采用的http协议的版本
-请求首部包含一个或者多个。
-请求实体：请求的是哪个页面。</code></pre><p><img src="https://img-blog.csdnimg.cn/2019110816190733.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>响应报文格式</strong></p>
-<pre><code>起始行+响应首部+空白行+响应实体
-起始行里面的内容：响应时采用的http协议版本    响应的状态码   状态码的简略信息
-响应首部包含一个或者多个
-响应实体:真正访问页面包含的内容。</code></pre><p>四、<strong>常见的请求方式  get  put  pust  delete</strong><br><strong>常见状态码</strong>：</p>
-<pre><code>400往上就是访问页面失败。   
-200访问成功。  
-201上传成功。  
-301永久重定向。   
-304资源在转发的过程中没有被修改。 
-401网页认证失败。  
-403权限被拒绝。
-404资源未找到 。 
-502通常是动态服务器处理不了数据或者web配置文件发生错误。
-503服务暂时不可用</code></pre><p>HTTP 首部介绍</p>
-<pre><code>•通用首部
-• 请求首部
-• 响应首部
-• 实体首部：专门用来表示实体中资源内部的类型、长度、编码格式等
-• 扩展首部：非标准首部，可有程序员自行创建</code></pre><p>通用首部</p>
-<pre><code>• Connection：定义 C/S 之间关于请求、响应的有关选项
-在 http1.0 的时候，如果他想使用持久连接，那么他所设置的选项即为
-Connection：keep-alive
-• Cache-Control：缓存控制，实现更精细的缓存控制方式。在 http 1.1 上比较常见</code></pre><p>请求首部</p>
-<pre><code>• Client-IP ：客户端 IP 地址
-• Host ：请求的主机，这在实现基于主机名的虚拟主机时很有用
-• Referer ：指明了请求当前资源原始资源的 URL，使用 referer 是可以防盗链
-• User-Agent：用户代理，一般而言是浏览器
-• Accept 首部：指客户端可以接受哪些编码的类型
-        ▪ Accept：服务端能够发送的媒体的类型
-        ▪ Accetp-Charset：接收的字符集
-        ▪ Accept-Encoding：编码格式
-        ▪ Accept-Lanage：所能接受的语言编码格式
-• 条件式请求首部：（在 http1.1 中才会用到）
-    当发送请求时，先问问对方是否满足条件，如果满足条件就请求，不满足就不请求 
-• 跟安全相关的请求：
-    ▪ Authorization
-    ▪ Cookie</code></pre><p>响应首部</p>
-<pre><code>• Age：资源响应给你之后可以使用的时长
-• Server：向客户端说明自己用到的程序名称和版本
-• 协商类的首部：
-▪ Vary：首部列表，服务器会根据此列表挑选最适合的版本发给客户端
-• 跟安全相关：
-▪ WWW-Authentication
-▪ Set-Cookie</code></pre><p>实体首部</p>
-<pre><code>• Location：指明资源的新位置，实现 302 响应码时通常会用到
-• Allow：允许对此资源使用的请求方法
-• 内容相关的首部
-    ▪ Content-Encoding
-    ▪ Content-Language
-    ▪ Content-Length
-    ▪ Content-Location：内容所在的位置
-    ▪ Content-Type
-• 缓存相关：
-    ▪ ETag：扩展标签/标记
-    ▪ Expires：过期时间
-    ▪ Last-Modified：最后修改时间</code></pre><p>五、<br>HTTP 的事务</p>
-<pre><code>包含了一个 HTTP 请求，和对应请求的响应就叫做一个 http 事务，也可以理解 http 事务就是一个完整的 HTTP 请求和 HTTP 响应的过程。
-http 协议默认情况下每个事务都会打开和关闭一个新的连接，所以会相当耗费时间和带宽，
-由于 TCP 慢启动特性，所以每条新的连接的性能本身就会有所降低，所以可打开的并行连接的数量上限是有限的。所以使用持久连接这种模式比默认情况下不使用持久连接的方式会好一点，他的好处表现在其请求和 tcp 断开的过程所消耗的时间会被减少。</code></pre><p>HTTP 资源</p>
-<pre><code>资源就是通过 HTTP 协议可以让用户通过浏览器或用户代理能够通过基于 http 协议向服务器端请求并获取的内容，像 html 文档，一张图片等等。
-资源类型：是通过 MIME 进行标记
-格式：major/minor 主标记和次标记</code></pre><p>常用的 MIME 类型</p>
-<pre><code>MIME 类型                                    文件类型
-test/html                                 html、htm 文本类型
-text/plain                                 text 文本类型
-image/jpeg                                 jpeg 图像类型
-image/gif                                 gif 图像类型
-vedio/mpeg4                                 音频标记类型
-application/vnd.ms-powerpoint             动态资源的标记方式</code></pre><p>URI 和 URL<br>    • URI(Uniform Resource Identifier) 同一资源标示符</p>
-<pre><code>用于标识某一互联网资源名称的字符串，通过这种标识来允许你用户对资源可通过特定的协议进行交互操作。
-在 Web 上可用的每种资源，包括 HTML 文档、图像、视频片段、程序等， 由一个通用资源标识符进行定位。所以我们可以使用URI 来标识每个资源的名称</code></pre><p>• URL（Uniform Resource Locator）(统一资源定位符）</p>
-<pre><code>用于描述一个特定服务器上某资源的特定位置。</code></pre><p>CGI</p>
-<p>Common Gateway Interface 通用网关接口<br>fastCGI 快速通用网关接口</p>
-<pre><code>web 服务器发现需要执行脚本了，就通过 CGI 协议跟后端的应用程序打交道，
-把用户的请求动态交给服务器，这个服务器的结果通过 CGI 协议返回给 http 服务器。</code></pre><p>六、一次 Web 资源请求的具体过程。</p>
-<ol>
-<li>客户端在 Web 浏览器输入需要访问的地址</li>
-<li>Web 浏览器会请求 DNS 服务器，查询解析到指定域名和 Web 服务器的地址</li>
-<li>客户端与请求的 Web 服务器端建立连接（TCP 三次握手）</li>
-<li>TCP 建立成功之后，发起 HTTP 请求</li>
-<li>服务器端收到客户端 HTTP 请求之后，会处理该请求</li>
-<li>处理客户端指定请求的资源</li>
-<li>服务器构建响应报文，响应给客户端</li>
-<li>服务器端将此信息记录到日志中</li>
-</ol>
-<p>打开浏览器F12，然后再发起http请求，缓存获取到URL：</p>
-<p>``响应报文<br><img src="https://img-blog.csdnimg.cn/20191108213405129.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>关于cookies解释：<a href="https://www.cnblogs.com/yonyong/p/9337712.html" target="_blank" rel="noopener">cookies和session会话介绍</a></p>
-<p>请求报文<br><img src="https://img-blog.csdnimg.cn/20191108214319663.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
 
     </div>
 
@@ -382,7 +281,7 @@ application/vnd.ms-powerpoint             动态资源的标记方式</code></pr
   </li>
   <li class="post-copyright-link">
     <strong>本文链接：</strong>
-    <a href="https://liu-bohua.github.io/2020/03/10/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/" title="Linux知识--HTTP协议分析">https://liu-bohua.github.io/2020/03/10/Linux知识--HTTP协议分析/</a>
+    <a href="https://liu-bohua.github.io/2020/03/10/Python%E5%AE%89%E8%A3%85%EF%BC%9AWindows%E5%8F%8ALinux%E5%AE%89%E8%A3%85/" title="Python安装：Windows及Linux安装">https://liu-bohua.github.io/2020/03/10/Python安装：Windows及Linux安装/</a>
   </li>
   <li class="post-copyright-license">
     <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fa fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
@@ -393,7 +292,7 @@ application/vnd.ms-powerpoint             动态资源的标记方式</code></pr
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
+              <a href="/tags/Python/" rel="tag"># Python</a>
           </div>
 
         
@@ -401,13 +300,10 @@ application/vnd.ms-powerpoint             动态资源的标记方式</code></pr
 
         
     <div class="post-nav">
+      <div class="post-nav-item"></div>
       <div class="post-nav-item">
-    <a href="/2020/03/10/Python%E5%AE%89%E8%A3%85%EF%BC%9AWindows%E5%8F%8ALinux%E5%AE%89%E8%A3%85/" rel="prev" title="Python安装：Windows及Linux安装">
-      <i class="fa fa-chevron-left"></i> Python安装：Windows及Linux安装
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/2020/03/10/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F/" rel="next" title="Linux--Apache的安装及工作模式">
-      Linux--Apache的安装及工作模式 <i class="fa fa-chevron-right"></i>
+    <a href="/2020/03/10/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90/" rel="next" title="Linux知识--HTTP协议分析">
+      Linux知识--HTTP协议分析 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
