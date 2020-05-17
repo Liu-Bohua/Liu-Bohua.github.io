@@ -1,267 +1,12 @@
-<!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
-<meta name="theme-color" content="#222">
-<meta name="generator" content="Hexo 4.2.0">
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
-  <link rel="mask-icon" href="/images/logo.svg" color="#222">
-  <meta name="msvalidate.01" content="true">
-
-<link rel="stylesheet" href="/css/main.css">
-
-<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
-<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
-
-<script id="hexo-configurations">
-    var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"shiyi.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"b2t":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":{"enable":true,"onlypost":false,"loadingImg":null},"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
-  </script>
-
-  <meta name="description" content="架构">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Linux--Apache的安装及工作模式">
-<meta property="og:url" content="https://shiyi.tech/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html">
-<meta property="og:site_name" content="十一の博客">
-<meta property="og:description" content="架构">
-<meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://img-blog.csdnimg.cn/2019111610420021.png">
-<meta property="article:published_time" content="2020-03-09T16:00:00.000Z">
-<meta property="article:modified_time" content="2020-03-10T06:41:04.712Z">
-<meta property="article:author" content="十一">
-<meta property="article:tag" content="架构">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019111610420021.png">
-
-<link rel="canonical" href="https://shiyi.tech/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html">
-
-
-<script id="page-configurations">
-  // https://hexo.io/docs/variables.html
-  CONFIG.page = {
-    sidebar: "",
-    isHome : false,
-    isPost : true,
-    lang   : 'zh-CN'
-  };
-</script>
-
-  <title>Linux--Apache的安装及工作模式 | 十一の博客</title>
-  
-
-
-
-
-
-
-  <noscript>
-  <style>
-  .use-motion .brand,
-  .use-motion .menu-item,
-  .sidebar-inner,
-  .use-motion .post-block,
-  .use-motion .pagination,
-  .use-motion .comments,
-  .use-motion .post-header,
-  .use-motion .post-body,
-  .use-motion .collection-header { opacity: initial; }
-
-  .use-motion .site-title,
-  .use-motion .site-subtitle {
-    opacity: initial;
-    top: initial;
-  }
-
-  .use-motion .logo-line-before i { left: initial; }
-  .use-motion .logo-line-after i { right: initial; }
-  </style>
-</noscript>
-
-</head>
-
-<body itemscope itemtype="http://schema.org/WebPage">
-  <div class="container use-motion">
-    <div class="headband"></div>
-
-    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-container">
-  <div class="site-nav-toggle">
-    <div class="toggle" aria-label="切换导航栏">
-      <span class="toggle-line toggle-line-first"></span>
-      <span class="toggle-line toggle-line-middle"></span>
-      <span class="toggle-line toggle-line-last"></span>
-    </div>
-  </div>
-
-  <div class="site-meta">
-
-    <a href="/" class="brand" rel="start">
-      <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">十一の博客</h1>
-      <span class="logo-line-after"><i></i></span>
-    </a>
-      <p class="site-subtitle" itemprop="description">张国荣说过得不到回应的热情适度可止</p>
-  </div>
-
-  <div class="site-nav-right">
-    <div class="toggle popup-trigger">
-    </div>
-  </div>
-</div>
-
-
-
-
-<nav class="site-nav">
-  <ul id="menu" class="main-menu menu">
-        <li class="menu-item menu-item-home">
-
-    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
-
-  </li>
-        <li class="menu-item menu-item-top">
-
-    <a href="/top/" rel="section"><i class="fa fa-signal fa-fw"></i>排行榜</a>
-
-  </li>
-        <li class="menu-item menu-item-about">
-
-    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
-
-  </li>
-        <li class="menu-item menu-item-tags">
-
-    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
-
-  </li>
-        <li class="menu-item menu-item-categories">
-
-    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
-
-  </li>
-        <li class="menu-item menu-item-archives">
-
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
-
-  </li>
-  </ul>
-</nav>
-
-
-
-
-</div>
-    </header>
-
-    
-  <div class="back-to-top">
-    <i class="fa fa-arrow-up"></i>
-    <span>0%</span>
-  </div>
-
-
-    <main class="main">
-      <div class="main-inner">
-        <div class="content-wrap">
-          
-
-          <div class="content post posts-expand">
-            
-
-    
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://shiyi.tech/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/author.jpg">
-      <meta itemprop="name" content="十一">
-      <meta itemprop="description" content="只有一条路不能选择，那就是放弃的路。只有一条路不能拒绝，那就是成长的路。">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="十一の博客">
-    </span>
-      <header class="post-header">
-        <h1 class="post-title" itemprop="name headline">
-          Linux--Apache的安装及工作模式
-        </h1>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2020-03-10 00:00:00 / 修改时间：14:41:04" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time>
-            </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a>
-                </span>
-            </span>
-
-          
-            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
-              <span class="post-meta-item-icon">
-                <i class="fa fa-eye"></i>
-              </span>
-              <span class="post-meta-item-text">阅读次数：</span>
-              <span id="busuanzi_value_page_pv"></span>
-            </span>
-  
-  <span class="post-meta-item">
-    
-      <span class="post-meta-item-icon">
-        <i class="far fa-comment"></i>
-      </span>
-      <span class="post-meta-item-text">Valine：</span>
-    
-    <a title="valine" href="/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html#valine-comments" itemprop="discussionUrl">
-      <span class="post-comments-count valine-comment-count" data-xid="/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html" itemprop="commentCount"></span>
-    </a>
-  </span>
-  
-  <br>
-            <span class="post-meta-item" title="本文字数">
-              <span class="post-meta-item-icon">
-                <i class="far fa-file-word"></i>
-              </span>
-                <span class="post-meta-item-text">本文字数：</span>
-              <span>8.1k</span>
-            </span>
-            <div class="post-description">架构</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-        <pre><code>博文概要：
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=2"><meta name="theme-color" content="#222"><meta name="generator" content="Hexo 4.2.0"><link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png"><link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png"><link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png"><link rel="mask-icon" href="/images/logo.svg" color="#222"><meta name="msvalidate.01" content="true"><link rel="stylesheet" href="/css/main.css"><link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext"><link rel="stylesheet" href="/lib/font-awesome/css/all.min.css"><script id="hexo-configurations">var NexT=window.NexT||{},CONFIG={hostname:"shiyi.tech",root:"/",scheme:"Muse",version:"7.8.0",exturl:!1,sidebar:{position:"left",display:"post",padding:18,offset:12,onmobile:!1},copycode:{enable:!0,show_result:!0,style:null},back2top:{enable:!0,sidebar:!1,b2t:!0,scrollpercent:!0},bookmark:{enable:!1,color:"#222",save:"auto"},fancybox:!1,mediumzoom:!1,lazyload:{enable:!0,onlypost:!1,loadingImg:null},pangu:!1,comments:{style:"tabs",active:null,storage:!0,lazyload:!1,nav:null},algolia:{hits:{per_page:10},labels:{input_placeholder:"Search for Posts",hits_empty:"We didn't find any results for the search: ${query}",hits_stats:"${hits} results found in ${time} ms"}},localsearch:{enable:!1,trigger:"auto",top_n_per_article:1,unescape:!1,preload:!1},motion:{enable:!0,async:!1,transition:{post_block:"fadeIn",post_header:"slideDownIn",post_body:"slideDownIn",coll_header:"slideLeftIn",sidebar:"slideUpIn"}}}</script><meta name="description" content="架构"><meta property="og:type" content="article"><meta property="og:title" content="Linux--Apache的安装及工作模式"><meta property="og:url" content="https://shiyi.tech/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html"><meta property="og:site_name" content="十一の博客"><meta property="og:description" content="架构"><meta property="og:locale" content="zh_CN"><meta property="og:image" content="https://img-blog.csdnimg.cn/2019111610420021.png"><meta property="article:published_time" content="2020-03-09T16:00:00.000Z"><meta property="article:modified_time" content="2020-03-10T06:41:04.712Z"><meta property="article:author" content="十一"><meta property="article:tag" content="架构"><meta name="twitter:card" content="summary"><meta name="twitter:image" content="https://img-blog.csdnimg.cn/2019111610420021.png"><link rel="canonical" href="https://shiyi.tech/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html"><script id="page-configurations">CONFIG.page={sidebar:"",isHome:!1,isPost:!0,lang:"zh-CN"}</script><title>Linux--Apache的安装及工作模式 | 十一の博客</title><noscript><style>.sidebar-inner,.use-motion .brand,.use-motion .collection-header,.use-motion .comments,.use-motion .menu-item,.use-motion .pagination,.use-motion .post-block,.use-motion .post-body,.use-motion .post-header{opacity:initial}.use-motion .site-subtitle,.use-motion .site-title{opacity:initial;top:initial}.use-motion .logo-line-before i{left:initial}.use-motion .logo-line-after i{right:initial}</style></noscript></head><body itemscope itemtype="http://schema.org/WebPage"><div class="container use-motion"><div class="headband"></div><header class="header" itemscope itemtype="http://schema.org/WPHeader"><div class="header-inner"><div class="site-brand-container"><div class="site-nav-toggle"><div class="toggle" aria-label="切换导航栏"><span class="toggle-line toggle-line-first"></span><span class="toggle-line toggle-line-middle"></span><span class="toggle-line toggle-line-last"></span></div></div><div class="site-meta"><a href="/" class="brand" rel="start"><span class="logo-line-before"><i></i></span><h1 class="site-title">十一の博客</h1><span class="logo-line-after"><i></i></span></a><p class="site-subtitle" itemprop="description">张国荣说过得不到回应的热情适度可止</p></div><div class="site-nav-right"><div class="toggle popup-trigger"></div></div></div><nav class="site-nav"><ul id="menu" class="main-menu menu"><li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i> 首页</a></li><li class="menu-item menu-item-top"><a href="/top/" rel="section"><i class="fa fa-signal fa-fw"></i> 排行榜</a></li><li class="menu-item menu-item-about"><a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i> 关于</a></li><li class="menu-item menu-item-tags"><a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i> 标签<span class="badge">3</span></a></li><li class="menu-item menu-item-categories"><a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i> 分类<span class="badge">3</span></a></li><li class="menu-item menu-item-archives"><a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i> 归档<span class="badge">7</span></a></li></ul></nav></div></header><div class="back-to-top"><i class="fa fa-arrow-up"></i> <span>0%</span></div><main class="main"><div class="main-inner"><div class="content-wrap"><div class="content post posts-expand"><article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN"><link itemprop="mainEntityOfPage" href="https://shiyi.tech/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html"><span hidden itemprop="author" itemscope itemtype="http://schema.org/Person"><meta itemprop="image" content="/images/author.jpg"><meta itemprop="name" content="十一"><meta itemprop="description" content="只有一条路不能选择，那就是放弃的路。只有一条路不能拒绝，那就是成长的路。"></span><span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization"><meta itemprop="name" content="十一の博客"></span><header class="post-header"><h1 class="post-title" itemprop="name headline"> Linux--Apache的安装及工作模式</h1><div class="post-meta"><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-calendar"></i></span> <span class="post-meta-item-text">发表于</span> <time title="创建时间：2020-03-10 00:00:00 / 修改时间：14:41:04" itemprop="dateCreated datePublished" datetime="2020-03-10T00:00:00+08:00">2020-03-10</time></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-folder"></i></span> <span class="post-meta-item-text">分类于</span> <span itemprop="about" itemscope itemtype="http://schema.org/Thing"><a href="/categories/%E6%9E%B6%E6%9E%84/" itemprop="url" rel="index"><span itemprop="name">架构</span></a></span></span><span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display:none"><span class="post-meta-item-icon"><i class="fa fa-eye"></i></span> <span class="post-meta-item-text">阅读次数：</span><span id="busuanzi_value_page_pv"></span></span><span class="post-meta-item"><span class="post-meta-item-icon"><i class="far fa-comment"></i></span> <span class="post-meta-item-text">Valine：</span><a title="valine" href="/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html#valine-comments" itemprop="discussionUrl"><span class="post-comments-count valine-comment-count" data-xid="/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html" itemprop="commentCount"></span></a></span><br><span class="post-meta-item" title="本文字数"><span class="post-meta-item-icon"><i class="far fa-file-word"></i></span> <span class="post-meta-item-text">本文字数：</span> <span>8.1k</span></span><div class="post-description">架构</div></div></header><div class="post-body" itemprop="articleBody"><pre><code>博文概要：
 1.安装apache服务及新版本的功能介绍。
 2.Apache的优化配置。
 3.Apache的工作模式。
-4.进程与线程的区别。</code></pre><p>一、常见的web服务器：Apache、Nginx、Tomcat</p>
-<pre><code>Apache服务器：apache软件基金会下开源的子项目，用于搭建web服务器，自身支持模块比较多，处理静态页面强，配置比较简单，自身不支持动态页面的处理。
+4.进程与线程的区别。</code></pre><p>一、常见的web服务器：Apache、Nginx、Tomcat</p><pre><code>Apache服务器：apache软件基金会下开源的子项目，用于搭建web服务器，自身支持模块比较多，处理静态页面强，配置比较简单，自身不支持动态页面的处理。
 区别：
     Apache：支持模块比较多、采用servlet处理模型，同步阻塞模型，工作模式多变，处于高并发的场景处理速度会比较慢，运行稳定。
     Nginx：轻量级web服务器，自身支持模块少，需要借助第三方模块支持（Nginx官方就可以下载），采用epo11处理模型，异步非阻塞型，适合高并发场景，配置简单。
-    Tomcat：Apache软件基金会下开源的子项目, 也称为容器，主要处理java语言编写的页面，也可以处理html页面，并发连接小。</code></pre><p>二、Apache2.4.23版本：</p>
-<pre><code>新增模块：
+    Tomcat：Apache软件基金会下开源的子项目, 也称为容器，主要处理java语言编写的页面，也可以处理html页面，并发连接小。</code></pre><p>二、Apache2.4.23版本：</p><pre><code>新增模块：
     Mod_proxy_fcgi（可提供fcgi代理）
     Mod_ratelimit（限制用户带宽）
     Mod_request（请求模块，对请求做过滤）
@@ -277,8 +22,7 @@
     6、每请求配置：, 
     7、毫秒级别的 keepalive timeout 
     8、基于 FQDN 的虚拟主机不再需要 NameVirtualHost 指令 
-    9、支持使用自定义变量</code></pre><p>三、部署apache服务：<br>一台Linux，CentOS Linux 7.*版本。<br><a href="https://pan.baidu.com/s/1qi_-LgeYTji7M7P7TnOB0A" target="_blank" rel="noopener">下载</a>安装包及依赖包。</p>
-<pre><code>[root@localhost ~]# rz  #上传下载好的安装包及依赖包。
+    9、支持使用自定义变量</code></pre><p>三、部署apache服务：<br>一台Linux，CentOS Linux 7.*版本。<br><a href="https://pan.baidu.com/s/1qi_-LgeYTji7M7P7TnOB0A" target="_blank" rel="noopener">下载</a>安装包及依赖包。</p><pre><code>[root@localhost ~]# rz  #上传下载好的安装包及依赖包。
 
 [root@localhost ~]# ls
 anaconda-ks.cfg        initial-setup-ks.cfg   公共  文档
@@ -320,12 +64,10 @@ apxs       envvars    htcacheclean  htpasswd  logresolve
 [root@localhost bin]# apachectl start 
         #启动apache，启动的时候会出现一些提示信息，不影响启动。
 AH00558: httpd: Could not reliably determine the server&apos;s fully qualified domain name, using localhost.localdomain. Set the &apos;ServerName&apos; directive globally to suppress this message
-        #解决此问题，只需要再apache主配置文件里添加域名即可解决。配置文件里：ServerName 添加域名就可以了</code></pre><p>接下来apache就能正常访问了。</p>
-<pre><code>[root@localhost bin]# curl 192.168.2.20
+        #解决此问题，只需要再apache主配置文件里添加域名即可解决。配置文件里：ServerName 添加域名就可以了</code></pre><p>接下来apache就能正常访问了。</p><pre><code>[root@localhost bin]# curl 192.168.2.20
 &lt;html&gt;&lt;body&gt;&lt;h1&gt;It works!&lt;/h1&gt;&lt;/body&gt;&lt;/html&gt;
 [root@localhost bin]# netstat -anpt | grep 80
-tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN     112414/httpd       #查看端口是否启动。   </code></pre><p>安装apache时一些参数解释：</p>
-<pre><code>--enable-so：支持动态共享模块（即打开 DSO 支持）
+tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN     112414/httpd       #查看端口是否启动。   </code></pre><p>安装apache时一些参数解释：</p><pre><code>--enable-so：支持动态共享模块（即打开 DSO 支持）
 --enable-rewrite：支持 url 重写
 --enable-ssl：支持 ssl
 --with-ssl=/usr/local/openssl:指定 ssl 安装位置
@@ -340,26 +82,15 @@ tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN     1
 --with-apr=/usr/local/apr:指定 apr 的安装路径
 --with-apr-util=/usr/local/apr-util:指定 apr-util 的安装路径
 --enable-expires:激活或通过配置文件控制 HTTP 的“Expires:”和“Cache-Control:”头内容，即对网站图片、js、css 等内容，提供客户端浏览器缓存的设置。这个是 apache 调优的一个重要选项之一。
---enable-deflate:提供对内容的压缩传输编码支持，支持压缩功能。在生产环境中，这是 apache 调优的一个重要选项之一。    </code></pre><p>四、Apache服务的三种工作模式详解。</p>
-<pre><code>Prefork模式（非线程型的，预派生子进程）
+--enable-deflate:提供对内容的压缩传输编码支持，支持压缩功能。在生产环境中，这是 apache 调优的一个重要选项之一。    </code></pre><p>四、Apache服务的三种工作模式详解。</p><pre><code>Prefork模式（非线程型的，预派生子进程）
 Worker模式（多线程多进程）
-Event模式（多进程多线程加epoll处理模型）</code></pre><p>Prefork模式：<br>当 Apache 服务器启动后，mpm_prefork 模块会预先创建多个子进程(默认为 5 个)，每个子进程只有一个线程，当接收到客户端的请求后，mpm_prefork 模块再将请求转交给子进程处理，并且每个子进程同时只能用于处理单个请求。<br>如果当前的请求数将超过预先创建的子进程数时，mpm_prefork模块就会创建新的子进程来处理额外的请求。<br>Apache 总是试图保持一些备用的或者是空闲的子进程用于迎接即将到来的请求。这样客户端的请求就不需要在接收后等候子进程的产生。</p>
-<p>优缺点：</p>
-<pre><code>·优点：它的每个子进程都会独立处理对应的单个请求，这样，如果其中一个请求出现问题就不会影响到其他请求。Prefork 在效率上要比 Worker 要高。
-·缺点：因为每个请求对应一个子进程，因此其占用的系统资源相对其他两种模式而言较多，内存使用大得多不擅长处理高并发的场景。</code></pre><p>Worker模式：<br>    worker 使用了多进程和多线程的混合模式，worker 模式也同样会先预派生一些子进程，然后每个子进程创建一些线程，同时包括一个监听线程，每个请求过来会被分配到一个线程来服务。</p>
-<p>优缺点：</p>
-<pre><code>·优点：线程比起进程会更轻量，因为线程是通过共享父进程的内存空间，因此，内存的占用会减少一些，在高并发的场景下会比 prefork 有更多可用的线程，表现会更优秀一些；另外，如果一个线程出现了问题也会导致同一进程下的线程出现问题，如果是多个线程出现问题，也只是影响 Apache 的一部分，而不是全部。
-·缺点：由于用到多进程多线程，需要考虑到线程的安全了，在使用 keep-alive 长连接的时候，某个线程会一直被占用，即使中间没有请求，需要等待到超时才会被释放（该问题在 prefork 模式下也存在）。</code></pre><p>Event模式：<br>这是 Apache 最新的工作模式，是 worker 模式的变种，它把服务进程从连接中分离出来，一worker 模式不同的是在于它解决了 keep-alive 长连接的时候占用线程资源被浪费的问题，在event 工作模式中，会有一些专门的线程用来管理这些 keep-alive 类型的线程，当有真实请求过来的时候，将请求传递给服务器的线程，执行完毕后，又允许它释放。</p>
-<p>优缺点：</p>
-<pre><code>·优点：增强了在高并发场景下的请求处理。
-·缺点：event 模式不能很好的支持 https 的访问（HTTP 认证相关的问题）。</code></pre><p>五、刚刚上面提到了线程跟进程。下面来解释一下线程和进程的区别。</p>
-<pre><code>线程是指进程内的一个执行单元,也是进程内的可调度实体。</code></pre><p>线程与进程的区别：</p>
-<pre><code>(1)地址空间:进程内的一个执行单元;进程至少有一个线程;它们共享进程的地址空间;而进程有自己独立的地址空间。
+Event模式（多进程多线程加epoll处理模型）</code></pre><p>Prefork模式：<br>当 Apache 服务器启动后，mpm_prefork 模块会预先创建多个子进程(默认为 5 个)，每个子进程只有一个线程，当接收到客户端的请求后，mpm_prefork 模块再将请求转交给子进程处理，并且每个子进程同时只能用于处理单个请求。<br>如果当前的请求数将超过预先创建的子进程数时，mpm_prefork模块就会创建新的子进程来处理额外的请求。<br>Apache 总是试图保持一些备用的或者是空闲的子进程用于迎接即将到来的请求。这样客户端的请求就不需要在接收后等候子进程的产生。</p><p>优缺点：</p><pre><code>·优点：它的每个子进程都会独立处理对应的单个请求，这样，如果其中一个请求出现问题就不会影响到其他请求。Prefork 在效率上要比 Worker 要高。
+·缺点：因为每个请求对应一个子进程，因此其占用的系统资源相对其他两种模式而言较多，内存使用大得多不擅长处理高并发的场景。</code></pre><p>Worker模式：<br> worker 使用了多进程和多线程的混合模式，worker 模式也同样会先预派生一些子进程，然后每个子进程创建一些线程，同时包括一个监听线程，每个请求过来会被分配到一个线程来服务。</p><p>优缺点：</p><pre><code>·优点：线程比起进程会更轻量，因为线程是通过共享父进程的内存空间，因此，内存的占用会减少一些，在高并发的场景下会比 prefork 有更多可用的线程，表现会更优秀一些；另外，如果一个线程出现了问题也会导致同一进程下的线程出现问题，如果是多个线程出现问题，也只是影响 Apache 的一部分，而不是全部。
+·缺点：由于用到多进程多线程，需要考虑到线程的安全了，在使用 keep-alive 长连接的时候，某个线程会一直被占用，即使中间没有请求，需要等待到超时才会被释放（该问题在 prefork 模式下也存在）。</code></pre><p>Event模式：<br>这是 Apache 最新的工作模式，是 worker 模式的变种，它把服务进程从连接中分离出来，一worker 模式不同的是在于它解决了 keep-alive 长连接的时候占用线程资源被浪费的问题，在event 工作模式中，会有一些专门的线程用来管理这些 keep-alive 类型的线程，当有真实请求过来的时候，将请求传递给服务器的线程，执行完毕后，又允许它释放。</p><p>优缺点：</p><pre><code>·优点：增强了在高并发场景下的请求处理。
+·缺点：event 模式不能很好的支持 https 的访问（HTTP 认证相关的问题）。</code></pre><p>五、刚刚上面提到了线程跟进程。下面来解释一下线程和进程的区别。</p><pre><code>线程是指进程内的一个执行单元,也是进程内的可调度实体。</code></pre><p>线程与进程的区别：</p><pre><code>(1)地址空间:进程内的一个执行单元;进程至少有一个线程;它们共享进程的地址空间;而进程有自己独立的地址空间。
 (2)资源拥有:进程是资源分配和拥有的单位,同一个进程内的线程共享进程的资源。
 (3)线程是处理器调度的基本单位,但进程不是。
-(4)二者均可并发执行。</code></pre><p>进程和线程都是由操作系统所体会的程序运行的基本单元，系统利用该基本单元实现系统对应用的并发性。<br>简而言之,一个程序至少有一个进程,一个进程至少有一个线程。<br>线程的划分尺度小于进程，使得多线程程序的并发性高。<br>另外，进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率。</p>
-<p>六、修改apache的工作模式：</p>
-<pre><code>[root@localhost ~]# apachectl -M
+(4)二者均可并发执行。</code></pre><p>进程和线程都是由操作系统所体会的程序运行的基本单元，系统利用该基本单元实现系统对应用的并发性。<br>简而言之,一个程序至少有一个进程,一个进程至少有一个线程。<br>线程的划分尺度小于进程，使得多线程程序的并发性高。<br>另外，进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率。</p><p>六、修改apache的工作模式：</p><pre><code>[root@localhost ~]# apachectl -M
 core_module (static)
  so_module (static)
 http_module (static)
@@ -385,8 +116,7 @@ Include conf/extra/httpd-mpm.conf
 #LoadModule mpm_event_module modules/mod_mpm_event.so
 LoadModule mpm_prefork_module modules/mod_mpm_prefork.so
         #我这里默认开启了Event模式，所以将Event模块加注释，然后将Prefork模式去掉。
-#LoadModule mpm_worker_module modules/mod_mpm_worker.so</code></pre><p><img data-src="https://img-blog.csdnimg.cn/2019111610420021.png" alt="在这里插入图片描述"><br>这就是apache的三种工作模式，若想开启哪个模式，去掉注释即可。但是相应的，需要将原来的工作模式注释掉。</p>
-<pre><code>修改完成后，直接保存退出，重启服务即可。
+#LoadModule mpm_worker_module modules/mod_mpm_worker.so</code></pre><p><img data-src="https://img-blog.csdnimg.cn/2019111610420021.png" alt="在这里插入图片描述"><br>这就是apache的三种工作模式，若想开启哪个模式，去掉注释即可。但是相应的，需要将原来的工作模式注释掉。</p><pre><code>修改完成后，直接保存退出，重启服务即可。
 [root@localhost conf]# apachectl restart
         #重启apache服务。
 [root@localhost conf]# apachectl -V
@@ -397,9 +127,7 @@ Server MPM:     prefork
   threaded:     no
 forked:     yes (variable process count)
 ...
-        #这样就修改了apache的工作模式了。</code></pre><p>修改apache的工作模式，要根据公司的需求适合哪种工作模式来进行修改。</p>
-<p>七、Apache的优化配置。<br>    上面修改工作模式，其实是httpd-mpm.conf定义apache每个工作模式的配置文件。<br>其中httpd-mpm.conf文件中也可以进行优化（启动进程数、空闲进程）<br>接下来解释优化apache服务的参数：</p>
-<pre><code>[root@localhost conf]# cat extra/httpd-mpm.conf 
+        #这样就修改了apache的工作模式了。</code></pre><p>修改apache的工作模式，要根据公司的需求适合哪种工作模式来进行修改。</p><p>七、Apache的优化配置。<br> 上面修改工作模式，其实是httpd-mpm.conf定义apache每个工作模式的配置文件。<br>其中httpd-mpm.conf文件中也可以进行优化（启动进程数、空闲进程）<br>接下来解释优化apache服务的参数：</p><pre><code>[root@localhost conf]# cat extra/httpd-mpm.conf 
 ...
 # prefork MPM
 ...
@@ -431,64 +159,7 @@ MaxSpareThreads        250
 ThreadsPerChild         25
 MaxRequestWorkers      400
 MaxConnectionsPerChild   0
-&lt;/IfModule&gt;</code></pre><p>上述解释，要根据现实工作环境，来进行优化。</p>
-
-    </div>
-
-    
-    
-    
-        
-
-<div>
-<ul class="post-copyright">
-  <li class="post-copyright-author">
-    <strong>本文作者： </strong>十一
-  </li>
-  <li class="post-copyright-link">
-    <strong>本文链接：</strong>
-    <a href="https://shiyi.tech/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html" title="Linux--Apache的安装及工作模式">https://shiyi.tech/Linux--Apache的安装及工作模式.html</a>
-  </li>
-  <li class="post-copyright-license">
-    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
-  </li>
-</ul>
-</div>
-
-
-      <footer class="post-footer">
-          <div class="post-tags">
-              <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a>
-          </div>
-
-        
-
-
-        
-    <div class="post-nav">
-      <div class="post-nav-item">
-    <a href="/Python%E5%AE%89%E8%A3%85%EF%BC%9AWindows%E5%8F%8ALinux%E5%AE%89%E8%A3%85.html" rel="prev" title="Python安装：Windows及Linux安装">
-      <i class="fa fa-chevron-left"></i> Python安装：Windows及Linux安装
-    </a></div>
-      <div class="post-nav-item">
-    <a href="/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90.html" rel="next" title="Linux知识--HTTP协议分析">
-      Linux知识--HTTP协议分析 <i class="fa fa-chevron-right"></i>
-    </a></div>
-    </div>
-      </footer>
-    
-  </article>
-  
-  
-  
-
-
-
-          </div>
-          
-    <div class="comments" id="valine-comments"></div>
-
-<script>
+&lt;/IfModule&gt;</code></pre><p>上述解释，要根据现实工作环境，来进行优化。</p></div><div><ul class="post-copyright"><li class="post-copyright-author"> <strong>本文作者：</strong> 十一</li><li class="post-copyright-link"> <strong>本文链接：</strong> <a href="https://shiyi.tech/Linux--Apache%E7%9A%84%E5%AE%89%E8%A3%85%E5%8F%8A%E5%B7%A5%E4%BD%9C%E6%A8%A1%E5%BC%8F.html" title="Linux--Apache的安装及工作模式">https://shiyi.tech/Linux--Apache的安装及工作模式.html</a></li><li class="post-copyright-license"> <strong>版权声明：</strong> 本博客所有文章除特别声明外，均采用<a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i> BY-NC-SA</a> 许可协议。转载请注明出处！</li></ul></div><footer class="post-footer"><div class="post-tags"> <a href="/tags/%E6%9E%B6%E6%9E%84/" rel="tag"># 架构</a></div><div class="post-nav"><div class="post-nav-item"><a href="/Linux%E7%9F%A5%E8%AF%86--HTTP%E5%8D%8F%E8%AE%AE%E5%88%86%E6%9E%90.html" rel="prev" title="Linux知识--HTTP协议分析"><i class="fa fa-chevron-left"></i> Linux知识--HTTP协议分析</a></div><div class="post-nav-item"> <a href="/Python%E4%B9%8B%E5%8F%98%E9%87%8F%E5%92%8C%E5%92%8C%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html" rel="next" title="Python之变量和和简单的数据类型">Python之变量和和简单的数据类型<i class="fa fa-chevron-right"></i></a></div></div></footer></article></div><div class="comments" id="valine-comments"></div><script>
   window.addEventListener('tabs:register', () => {
     let { activeClass } = CONFIG.comments;
     if (CONFIG.comments.storage) {
@@ -508,207 +179,7 @@ MaxConnectionsPerChild   0
       localStorage.setItem('comments_active', commentClass);
     });
   }
-</script>
-
-        </div>
-          
-  
-  <div class="toggle sidebar-toggle">
-    <span class="toggle-line toggle-line-first"></span>
-    <span class="toggle-line toggle-line-middle"></span>
-    <span class="toggle-line toggle-line-last"></span>
-  </div>
-
-  <aside class="sidebar">
-    <div class="sidebar-inner">
-
-      <ul class="sidebar-nav motion-element">
-        <li class="sidebar-nav-toc">
-          文章目录
-        </li>
-        <li class="sidebar-nav-overview">
-          站点概览
-        </li>
-      </ul>
-
-      <!--noindex-->
-      <div class="post-toc-wrap sidebar-panel">
-      </div>
-      <!--/noindex-->
-
-      <div class="site-overview-wrap sidebar-panel">
-        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="十一"
-      src="/images/author.jpg">
-  <p class="site-author-name" itemprop="name">十一</p>
-  <div class="site-description" itemprop="description">只有一条路不能选择，那就是放弃的路。只有一条路不能拒绝，那就是成长的路。</div>
-</div>
-<div class="site-state-wrap motion-element">
-  <nav class="site-state">
-      <div class="site-state-item site-state-posts">
-          <a href="/archives/">
-        
-          <span class="site-state-item-count">7</span>
-          <span class="site-state-item-name">日志</span>
-        </a>
-      </div>
-      <div class="site-state-item site-state-categories">
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">分类</span>
-      </div>
-      <div class="site-state-item site-state-tags">
-        <span class="site-state-item-count">3</span>
-        <span class="site-state-item-name">标签</span>
-      </div>
-  </nav>
-</div>
-  <div class="links-of-author motion-element">
-      <span class="links-of-author-item">
-        <a href="https://github.com/Liu-Bohua/Liu-Bohua.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Liu-Bohua&#x2F;Liu-Bohua.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
-      </span>
-      <span class="links-of-author-item">
-        <a href="https://blog.csdn.net/Bohua101" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bohua101" rel="noopener" target="_blank"><i class="fab fa-crosshairs fa-fw"></i>CSDN</a>
-      </span>
-  </div>
-  <div class="cc-license motion-element" itemprop="license">
-    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
-  </div>
-
-
-
-      </div>
-
-    </div>
-  </aside>
-  <div id="sidebar-dimmer"></div>
-
-
-      </div>
-    </main>
-
-    <footer class="footer">
-      <div class="footer-inner">
-        
-
-        
-
-<div class="copyright">
-  
-  &copy; 2019 – 
-  <span itemprop="copyrightYear">2020</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">十一</span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item-icon">
-      <i class="fa fa-chart-area"></i>
-    </span>
-      <span class="post-meta-item-text">站点总字数：</span>
-    <span title="站点总字数">32k</span>
-</div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
-  </div>
-
-        
-<div class="busuanzi-count">
-  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-user"></i>
-      </span>
-      <span class="site-uv" title="总访客量">
-        <span id="busuanzi_value_site_uv"></span>
-      </span>
-    </span>
-    <span class="post-meta-divider">|</span>
-    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
-      <span class="post-meta-item-icon">
-        <i class="fa fa-eye"></i>
-      </span>
-      <span class="site-pv" title="总访问量">
-        <span id="busuanzi_value_site_pv"></span>
-      </span>
-    </span>
-</div>
-
-
-
-
-
-
-
-
-      </div>
-    </footer>
-  </div>
-
-  
-  <script src="/lib/anime.min.js"></script>
-  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
-  <script src="/lib/velocity/velocity.min.js"></script>
-  <script src="/lib/velocity/velocity.ui.min.js"></script>
-
-<script src="/js/utils.js"></script>
-
-<script src="/js/motion.js"></script>
-
-
-<script src="/js/schemes/muse.js"></script>
-
-
-<script src="/js/next-boot.js"></script>
-
-
-
-
-  
-  <script>
-    (function(){
-      var canonicalURL, curProtocol;
-      //Get the <link> tag
-      var x=document.getElementsByTagName("link");
-		//Find the last canonical URL
-		if(x.length > 0){
-			for (i=0;i<x.length;i++){
-				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
-					canonicalURL=x[i].href;
-				}
-			}
-		}
-    //Get protocol
-	    if (!canonicalURL){
-	    	curProtocol = window.location.protocol.split(':')[0];
-	    }
-	    else{
-	    	curProtocol = canonicalURL.split(':')[0];
-	    }
-      //Get current URL if the canonical URL does not exist
-	    if (!canonicalURL) canonicalURL = window.location.href;
-	    //Assign script content. Replace current URL with the canonical URL
-      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
-  </script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-  
-
-
-<script>
+</script></div><div class="toggle sidebar-toggle"><span class="toggle-line toggle-line-first"></span><span class="toggle-line toggle-line-middle"></span><span class="toggle-line toggle-line-last"></span></div><aside class="sidebar"><div class="sidebar-inner"><ul class="sidebar-nav motion-element"><li class="sidebar-nav-toc"> 文章目录</li><li class="sidebar-nav-overview"> 站点概览</li></ul><div class="post-toc-wrap sidebar-panel"></div><div class="site-overview-wrap sidebar-panel"><div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person"> <img class="site-author-image" itemprop="image" alt="十一" src="/images/author.jpg"><p class="site-author-name" itemprop="name">十一</p><div class="site-description" itemprop="description">只有一条路不能选择，那就是放弃的路。只有一条路不能拒绝，那就是成长的路。</div></div><div class="site-state-wrap motion-element"><nav class="site-state"><div class="site-state-item site-state-posts"> <a href="/archives/"><span class="site-state-item-count">7</span> <span class="site-state-item-name">日志</span></a></div><div class="site-state-item site-state-categories"> <span class="site-state-item-count">3</span> <span class="site-state-item-name">分类</span></div><div class="site-state-item site-state-tags"> <span class="site-state-item-count">3</span> <span class="site-state-item-name">标签</span></div></nav></div><div class="links-of-author motion-element"><span class="links-of-author-item"><a href="https://github.com/Liu-Bohua/Liu-Bohua.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Liu-Bohua&#x2F;Liu-Bohua.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i> GitHub</a></span><span class="links-of-author-item"><a href="https://blog.csdn.net/Bohua101" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bohua101" rel="noopener" target="_blank"><i class="fab fa-crosshairs fa-fw"></i> CSDN</a></span></div><div class="cc-license motion-element" itemprop="license"> <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a></div></div></div></aside><div id="sidebar-dimmer"></div></div></main><footer class="footer"><div class="footer-inner"><div class="copyright"> &copy; 2019 – <span itemprop="copyrightYear">2020</span><span class="with-love"><i class="fa fa-heart"></i></span> <span class="author" itemprop="copyrightHolder">十一</span> <span class="post-meta-divider">|</span><span class="post-meta-item-icon"><i class="fa fa-chart-area"></i></span> <span class="post-meta-item-text">站点总字数：</span> <span title="站点总字数">32k</span></div><div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动</div><div class="busuanzi-count"><script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><span class="post-meta-item" id="busuanzi_container_site_uv" style="display:none"><span class="post-meta-item-icon"><i class="fa fa-user"></i></span><span class="site-uv" title="总访客量"><span id="busuanzi_value_site_uv"></span></span></span> <span class="post-meta-divider">|</span><span class="post-meta-item" id="busuanzi_container_site_pv" style="display:none"><span class="post-meta-item-icon"><i class="fa fa-eye"></i></span><span class="site-pv" title="总访问量"><span id="busuanzi_value_site_pv"></span></span></span></div></div></footer></div><script src="/lib/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script><script src="/lib/velocity/velocity.min.js"></script><script src="/lib/velocity/velocity.ui.min.js"></script><script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script><script>!function(){var o,n,e=document.getElementsByTagName("link");if(0<e.length)for(i=0;i<e.length;i++)"canonical"==e[i].rel.toLowerCase()&&e[i].href&&(o=e[i].href);n=o?o.split(":")[0]:window.location.protocol.split(":")[0],o||(o=window.location.href),function(){var e=o,i=document.referrer;if(!/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi.test(e)){var t="https"===String(n).toLowerCase()?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";i?(t+="?r="+encodeURIComponent(document.referrer),e&&(t+="&l="+e)):e&&(t+="?l="+e),(new Image).src=t}}(window)}()</script><script>
 NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
   NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
     var GUEST = ['nick', 'mail', 'link'];
@@ -734,7 +205,4 @@ NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
     });
   }, window.Valine);
 });
-</script>
-
-<script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
-</html>
+</script><script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({pluginRootPath:"live2dw/",pluginJsPath:"lib/",pluginModelPath:"assets/",tagMode:!1,model:{jsonPath:"/live2dw/assets/haruto.model.json"},display:{position:"right",width:150,height:300},mobile:{show:!0},log:!1})</script></body></html>
