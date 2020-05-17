@@ -9,15 +9,16 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="msvalidate.01" content="true">
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"shiyi.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"shiyi.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"b2t":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":{"enable":true,"onlypost":false,"loadingImg":null},"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="Docker及K8s">
@@ -129,9 +130,29 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-top">
+
+    <a href="/top/" rel="section"><i class="fa fa-signal fa-fw"></i>排行榜</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
 
   </li>
   </ul>
@@ -198,7 +219,28 @@
                 </span>
             </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Docker%E5%AE%89%E8%A3%85.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Docker%E5%AE%89%E8%A3%85.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
@@ -225,7 +267,7 @@
 4.DockerContainer容器</code></pre><p><strong>二、Docker架构：</strong><br>Docker 使用客户端-服务器 (C/S) 架构模式，使用远程API来管理和创建Docker容器。Docker 容器通过 Docker 镜像来创建。容器与镜像的关系类似于面向对象编程中的对象与类。<br>| Docker | 面向对象 |<br>|–|–|<br>|容器  | 对象 |<br>|  镜像| 类 |</p>
 <p><strong>一句话：镜像是容器运行的基石，容器是镜像运行之后的实例。</strong></p>
 <p>Docker采用 C/S架构 Docker daemon 作为服务端接受来自客户的请求，并处理这些请求（创建、运行、分发容器）。 客户端和服务端既可以运行在一个机器上，也可通过 socket 或者RESTful API 来进行通信。<br>Docker daemon 一般在宿主主机后台运行，等待接收来自客户端的消息。 Docker 客户端则为用户提供一系列可执行命令，用户用这些命令实现跟 Docker daemon 交互。</p>
-<p><img src="https://img-blog.csdnimg.cn/20200311193954166.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>三、局限性：</strong><br>Docker并不是全能的，设计之初也不是KVM之类虚拟化手段的替代品，简单总结几点：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/20200311193954166.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><strong>三、局限性：</strong><br>Docker并不是全能的，设计之初也不是KVM之类虚拟化手段的替代品，简单总结几点：</p>
 <pre><code>1.Docker是基于Linux 64bit的，无法在32bit的linux/Windows/unix环境下使用。
 2.LXC（Linux Contains）是基于cgroup等linux kernel功能的，因此container的guest系统只能是linux base的。
 3.隔离性相比KVM之类的虚拟化方案还是有些欠缺，所有container公用一部分的运行库。
@@ -233,16 +275,16 @@
 5.cgroup的cpu和cpuset提供的cpu功能相比KVM的等虚拟化方案相比难以度量(所以dotcloud主要是按内存收费)。
 6.Docker对disk的管理比较有限。
 7.container随着用户进程的停止而销毁，container中的log等用户数据不便收集。</code></pre><p><strong>四、Centos7安装docker：</strong><br>使用docker的基本要求：内核版本必须是3.10以上的。</p>
-<p>安装的第一种方法：从Docker的官网下载。（不推荐这样安装。）<br><a href="https://www.docker.com/" target="_blank" rel="noopener">进入官网</a>：<br><img src="https://img-blog.csdnimg.cn/20200311194153829.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>一种企业版，一种社区版。我们安装社区版。<br>企业版docker官网提供技术支持，而社区版就需要我们自己去摸索了。</p>
-<p><img src="https://img-blog.csdnimg.cn/20200311194222819.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20200311194229692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
-<p><img src="https://img-blog.csdnimg.cn/20200311194238859.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>进入后，找到Install from a package：<br><img src="https://img-blog.csdnimg.cn/20200311194253379.png" alt="在这里插入图片描述"><br>然后将网站复制，回centos7终端，搭建yum源：<br>搭建yum源：/etc/yum.repos.d/下创建yum源。</p>
+<p>安装的第一种方法：从Docker的官网下载。（不推荐这样安装。）<br><a href="https://www.docker.com/" target="_blank" rel="noopener">进入官网</a>：<br><img data-src="https://img-blog.csdnimg.cn/20200311194153829.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>一种企业版，一种社区版。我们安装社区版。<br>企业版docker官网提供技术支持，而社区版就需要我们自己去摸索了。</p>
+<p><img data-src="https://img-blog.csdnimg.cn/20200311194222819.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img data-src="https://img-blog.csdnimg.cn/20200311194229692.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"></p>
+<p><img data-src="https://img-blog.csdnimg.cn/20200311194238859.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>进入后，找到Install from a package：<br><img data-src="https://img-blog.csdnimg.cn/20200311194253379.png" alt="在这里插入图片描述"><br>然后将网站复制，回centos7终端，搭建yum源：<br>搭建yum源：/etc/yum.repos.d/下创建yum源。</p>
 <figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[aaa]</span></span><br><span class="line"><span class="attr">name</span>=aaa</span><br><span class="line"><span class="attr">baseurl</span>=https://download.docker.com/linux/centos/<span class="number">7</span>/x<span class="number">86_64</span>/stable/</span><br><span class="line"><span class="attr">gpgcheck</span>=<span class="number">0</span>		<span class="comment">#检查是否是本地官方的库</span></span><br><span class="line"><span class="attr">enabled</span>=<span class="number">1</span>		<span class="comment">#启用yum源</span></span><br></pre></td></tr></table></figure>
 <p>保存退出，查看yum源的信息：</p>
 <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># yum repolist</span></span><br></pre></td></tr></table></figure>
 <p>默认下载的是最新版本docker-ce。</p>
 <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># yum -y install docker-ce</span></span><br></pre></td></tr></table></figure>
-<p>因为网速原因，所以我一般可以采取另外一种方法，从我们国内下载，国内很多网站都提供了docker-ce的镜像站，比如说阿里云、网易云、清华大学镜像站等。<br>这里我们从阿里云下载的方式下载。<a href="https://developer.aliyun.com/mirror" target="_blank" rel="noopener">戳这里</a><br><img src="https://img-blog.csdnimg.cn/20200311194553928.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>根据提示安装：<br>安装必要的一些系统工具：</p>
+<p>因为网速原因，所以我一般可以采取另外一种方法，从我们国内下载，国内很多网站都提供了docker-ce的镜像站，比如说阿里云、网易云、清华大学镜像站等。<br>这里我们从阿里云下载的方式下载。<a href="https://developer.aliyun.com/mirror" target="_blank" rel="noopener">戳这里</a><br><img data-src="https://img-blog.csdnimg.cn/20200311194553928.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>根据提示安装：<br>安装必要的一些系统工具：</p>
 <figure class="highlight reasonml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="literal">[<span class="identifier">root</span>@<span class="identifier">localhost</span> ~]</span># yum install -y yum-utils device-mapper-persistent-data lvm2</span><br><span class="line">添加软件源信息：</span><br><span class="line"><span class="literal">[<span class="identifier">root</span>@<span class="identifier">localhost</span> ~]</span># yum-config-manager --add-repo https:<span class="comment">//mirrors.aliyun.com/docker-ce/linux/centos/docker-ce.repo</span></span><br><span class="line">执行完成后，在/etc/yum.repo.d/下生成一个docker-ce yum源</span><br><span class="line"><span class="literal">[<span class="identifier">root</span>@<span class="identifier">localhost</span> ~]</span># ls /etc/yum.repos.d/</span><br><span class="line">CentOS-<span class="module-access"><span class="module"><span class="identifier">Base</span>.</span></span>repo  CentOS-<span class="module-access"><span class="module"><span class="identifier">Debuginfo</span>.</span></span>repo  CentOS-<span class="module-access"><span class="module"><span class="identifier">Media</span>.</span></span>repo    CentOS-<span class="module-access"><span class="module"><span class="identifier">Vault</span>.</span></span>repo</span><br><span class="line">CentOS-<span class="module-access"><span class="module"><span class="identifier">CR</span>.</span></span>repo    CentOS-fasttrack.repo  CentOS-<span class="module-access"><span class="module"><span class="identifier">Sources</span>.</span></span>repo  docker-ce.repo</span><br></pre></td></tr></table></figure>
 
 <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">查看yum源的信息：</span><br><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># yum repolist</span></span><br><span class="line"></span><br><span class="line">做缓存更新：</span><br><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># yum makecache</span></span><br><span class="line"></span><br><span class="line">查看docker-ce的可用版本。</span><br><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># yum list docker-ce.x86_64 --showduplicates | sort -r</span></span><br></pre></td></tr></table></figure>
@@ -261,9 +303,9 @@
 <figure class="highlight angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">[<span class="symbol">root@</span>localhost ~]# docker pull nginx</span><br><span class="line">[<span class="symbol">root@</span>localhost ~]# docker images</span><br><span class="line">REPOSITORY          TAG                 IMAGE ID            CREATED             SIZE</span><br><span class="line">nginx               latest              <span class="number">231</span>d40e811cd        <span class="number">12</span> days ago         <span class="number">126</span>MB</span><br><span class="line">centos              <span class="number">7</span>                   <span class="number">5e35</span>e350aded        <span class="number">3</span> weeks ago         <span class="number">203</span>MB</span><br></pre></td></tr></table></figure>
 <p>运行nginx服务：</p>
 <figure class="highlight autoit"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># docker run -itd -p 80 nginx			#这里-p是映射本地的端口</span></span><br><span class="line">[root<span class="symbol">@localhost</span> ~]<span class="meta"># docker ps	#查看运行的服务及端口号。</span></span><br></pre></td></tr></table></figure>
-<p>访问网页测试：<br><img src="https://img-blog.csdnimg.cn/20200311195259559.png" alt="在这里插入图片描述"><br>更改网页：需要进入容器里进行操作：</p>
+<p>访问网页测试：<br><img data-src="https://img-blog.csdnimg.cn/20200311195259559.png" alt="在这里插入图片描述"><br>更改网页：需要进入容器里进行操作：</p>
 <figure class="highlight elixir"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">首先查看容器ID号：</span><br><span class="line">[root<span class="variable">@localhost</span> ~]<span class="comment"># docker ps</span></span><br><span class="line"></span><br><span class="line">进入容器：</span><br><span class="line">[root<span class="variable">@localhost</span> ~]<span class="comment"># docker exec -it 4a0bb72249a0 /bin/bash</span></span><br><span class="line"></span><br><span class="line">默认安装完nginx，网页根目录在/usr/share/nginx/html/下：</span><br><span class="line">修改：</span><br><span class="line">root<span class="variable">@4a0bb72249a0</span><span class="symbol">:/</span><span class="comment"># echo test &gt; /usr/share/nginx/html/index.html </span></span><br><span class="line">root<span class="variable">@4a0bb72249a0</span><span class="symbol">:/</span><span class="comment"># cat /usr/share/nginx/html/index.html </span></span><br><span class="line">test</span><br></pre></td></tr></table></figure>
-<p>再次网页访问进行查看：<br><img src="https://img-blog.csdnimg.cn/20200311195348182.png" alt="在这里插入图片描述"><br>更改成功。</p>
+<p>再次网页访问进行查看：<br><img data-src="https://img-blog.csdnimg.cn/20200311195348182.png" alt="在这里插入图片描述"><br>更改成功。</p>
 <p>至此，docker部署完成。</p>
 
     </div>
@@ -271,6 +313,23 @@
     
     
     
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>十一
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://shiyi.tech/Docker%E5%AE%89%E8%A3%85.html" title="Docker安装">https://shiyi.tech/Docker安装.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
 
       <footer class="post-footer">
           <div class="post-tags">
@@ -286,10 +345,7 @@
     <a href="/Python%E4%B9%8B%E5%88%97%E8%A1%A8%EF%BC%88list%EF%BC%89%E7%9A%84%E6%93%8D%E4%BD%9C.html" rel="prev" title="Python之列表（list）的操作">
       <i class="fa fa-chevron-left"></i> Python之列表（list）的操作
     </a></div>
-      <div class="post-nav-item">
-    <a href="/Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E9%80%BB%E8%BE%91%E3%80%82.html" rel="next" title="Docker的基本操作逻辑。">
-      Docker的基本操作逻辑。 <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -302,6 +358,7 @@
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -377,6 +434,17 @@
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Liu-Bohua/Liu-Bohua.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Liu-Bohua&#x2F;Liu-Bohua.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bohua101" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bohua101" rel="noopener" target="_blank"><i class="fab fa-crosshairs fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
 
 
 
@@ -398,7 +466,7 @@
 
 <div class="copyright">
   
-  &copy; 
+  &copy; 2019 – 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -408,12 +476,33 @@
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
+      <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">32k</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -428,6 +517,7 @@
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -445,6 +535,31 @@
 
 
   
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
 
 
 
@@ -463,6 +578,35 @@
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'wSXwbA4jcrlCbySQw29hr0WU-gzGzoHsz',
+      appKey     : 'ih5HbNbXMP4FN2Vj6HL5vuCL',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
 </html>

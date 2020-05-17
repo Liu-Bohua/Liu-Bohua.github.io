@@ -9,15 +9,16 @@
   <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
   <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
   <link rel="mask-icon" href="/images/logo.svg" color="#222">
+  <meta name="msvalidate.01" content="true">
 
 <link rel="stylesheet" href="/css/main.css">
 
-
+<link rel="stylesheet" href="//fonts.lug.ustc.edu.cn/css?family=Lato:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"shiyi.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+    var CONFIG = {"hostname":"shiyi.tech","root":"/","scheme":"Muse","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":true,"show_result":true,"style":null},"back2top":{"enable":true,"sidebar":false,"b2t":true,"scrollpercent":true},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":{"enable":true,"onlypost":false,"loadingImg":null},"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
   <meta name="description" content="Python">
@@ -127,9 +128,29 @@
     <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
 
   </li>
+        <li class="menu-item menu-item-top">
+
+    <a href="/top/" rel="section"><i class="fa fa-signal fa-fw"></i>排行榜</a>
+
+  </li>
+        <li class="menu-item menu-item-about">
+
+    <a href="/about/" rel="section"><i class="fa fa-user fa-fw"></i>关于</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签<span class="badge">3</span></a>
+
+  </li>
+        <li class="menu-item menu-item-categories">
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类<span class="badge">3</span></a>
+
+  </li>
         <li class="menu-item menu-item-archives">
 
-    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档<span class="badge">7</span></a>
 
   </li>
   </ul>
@@ -196,7 +217,28 @@
                 </span>
             </span>
 
-          <br>
+          
+            <span class="post-meta-item" title="阅读次数" id="busuanzi_container_page_pv" style="display: none;">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span id="busuanzi_value_page_pv"></span>
+            </span>
+  
+  <span class="post-meta-item">
+    
+      <span class="post-meta-item-icon">
+        <i class="far fa-comment"></i>
+      </span>
+      <span class="post-meta-item-text">Valine：</span>
+    
+    <a title="valine" href="/Python%E4%B9%8B%E5%8F%98%E9%87%8F%E5%92%8C%E5%92%8C%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html#valine-comments" itemprop="discussionUrl">
+      <span class="post-comments-count valine-comment-count" data-xid="/Python%E4%B9%8B%E5%8F%98%E9%87%8F%E5%92%8C%E5%92%8C%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html" itemprop="commentCount"></span>
+    </a>
+  </span>
+  
+  <br>
             <span class="post-meta-item" title="本文字数">
               <span class="post-meta-item-icon">
                 <i class="far fa-file-word"></i>
@@ -274,9 +316,9 @@
 <p> <strong>最常见的错误</strong>：单引号中包含撇号。</p>
 <p><strong>做一个小实验</strong>：<br>1、将用户的姓名存到一个变量中，并向该用户显示一条信息，显示内容为：“你好，艾瑞克，今天的Python课你学到东西了吗？”</p>
 <figure class="highlight routeros"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">name</span>=<span class="string">'艾瑞克'</span></span><br><span class="line"><span class="builtin-name">print</span>(<span class="string">'你好，'</span>+name+<span class="string">',今天的Python课你学到东西了吗'</span>)</span><br><span class="line"></span><br><span class="line">你好，艾瑞克,今天的Python课你学到东西了吗</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200310191846111.png" alt="在这里插入图片描述"><br>2、将一个人的名字存到变量中，再以小写、大写和首字母大写的方式显示这个人的名字。</p>
+<p><img data-src="https://img-blog.csdnimg.cn/20200310191846111.png" alt="在这里插入图片描述"><br>2、将一个人的名字存到变量中，再以小写、大写和首字母大写的方式显示这个人的名字。</p>
 <figure class="highlight stylus"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">lbh_name = <span class="string">'lisi'</span></span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(lbh_name.lower()</span></span>)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(lbh_name.upper()</span></span>)</span><br><span class="line"><span class="function"><span class="title">print</span><span class="params">(lbh_name.title()</span></span>)</span><br><span class="line"></span><br><span class="line">lisi</span><br><span class="line">LISI</span><br><span class="line">Lisi</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200310191931866.png" alt="在这里插入图片描述"><br>3、按一下格式打印诗词：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/20200310191931866.png" alt="在这里插入图片描述"><br>3、按一下格式打印诗词：</p>
 <p>《自由》      </p>
 <p>为人进出的门紧锁着;</p>
 <p>想死的门敞开着。</p>
@@ -288,7 +330,7 @@
 <p>算球了，</p>
 <p>再关十几天就自由了！</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">poetry = <span class="string">'''</span></span><br><span class="line"><span class="string">《自由》      </span></span><br><span class="line"><span class="string">为人进出的门紧锁着;</span></span><br><span class="line"><span class="string">想死的门敞开着。</span></span><br><span class="line"><span class="string">有个病毒在外面高喊着:</span></span><br><span class="line"><span class="string">“出来玩吧，给你自由！”</span></span><br><span class="line"><span class="string">但我深深地知道……</span></span><br><span class="line"><span class="string">出去了，不一定还能回来。</span></span><br><span class="line"><span class="string">人的生命只有一次，</span></span><br><span class="line"><span class="string">算球了，</span></span><br><span class="line"><span class="string">再关十几天就自由了！</span></span><br><span class="line"><span class="string">'''</span></span><br><span class="line">print(poetry)</span><br><span class="line"></span><br><span class="line">《自由》      </span><br><span class="line">为人进出的门紧锁着;</span><br><span class="line">想死的门敞开着。</span><br><span class="line">有个病毒在外面高喊着:</span><br><span class="line">“出来玩吧，给你自由！”</span><br><span class="line">但我深深地知道……</span><br><span class="line">出去了，不一定还能回来。</span><br><span class="line">人的生命只有一次，</span><br><span class="line">算球了，</span><br><span class="line">再关十几天就自由了！</span><br></pre></td></tr></table></figure>
-<p><img src="https://img-blog.csdnimg.cn/20200310192031406.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>当然直接输出也是可以的：</p>
+<p><img data-src="https://img-blog.csdnimg.cn/20200310192031406.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>当然直接输出也是可以的：</p>
 <figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">print(<span class="string">'''</span></span><br><span class="line"><span class="string">《自由》      </span></span><br><span class="line"><span class="string">为人进出的门紧锁着;</span></span><br><span class="line"><span class="string">想死的门敞开着。</span></span><br><span class="line"><span class="string">有个病毒在外面高喊着:</span></span><br><span class="line"><span class="string">“出来玩吧，给你自由！”</span></span><br><span class="line"><span class="string">但我深深地知道……</span></span><br><span class="line"><span class="string">出去了，不一定还能回来。</span></span><br><span class="line"><span class="string">人的生命只有一次，</span></span><br><span class="line"><span class="string">算球了，</span></span><br><span class="line"><span class="string">再关十几天就自由了！</span></span><br><span class="line"><span class="string">'''</span>)</span><br><span class="line"></span><br><span class="line">《自由》      </span><br><span class="line">为人进出的门紧锁着;</span><br><span class="line">想死的门敞开着。</span><br><span class="line">有个病毒在外面高喊着:</span><br><span class="line">“出来玩吧，给你自由！”</span><br><span class="line">但我深深地知道……</span><br><span class="line">出去了，不一定还能回来。</span><br><span class="line">人的生命只有一次，</span><br><span class="line">算球了，</span><br><span class="line">再关十几天就自由了！</span><br></pre></td></tr></table></figure>
 <p>至此，变量及一些简单的数据类型解释完毕。</p>
 <p> 上述截图中我所使用的是基于浏览器编写代码的工具：Jupyter Notebook。<br>在了解Jupyter Notebook之前，我们先来了解一下Ipython这个工具。<br><strong>ipython</strong></p>
@@ -313,7 +355,7 @@ Jupyter 内核
 <p> ④ 对代码编写说明文档或语句时，支持Markdown语法。</p>
 <p> ⑤ 支持使用LaTeX编写数学性说明。</p>
 <ol start="3">
-<li>安装。<br>当然有些Python编程人员不习惯这样的操作，没关系，我们可以免安装试用体验一下，<a href="https://jupyter.org/try" target="_blank" rel="noopener">点这里试用</a>，最后再来决定使用与否。<br><img src="https://img-blog.csdnimg.cn/20200311130641901.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>安装前提，在安装Jupyter Notebook时我们需要安装Python3.3以上版本，安装python请参考<a href="https://blog.csdn.net/Bohua101/article/details/104780094" target="_blank" rel="noopener">python安装</a>。</li>
+<li>安装。<br>当然有些Python编程人员不习惯这样的操作，没关系，我们可以免安装试用体验一下，<a href="https://jupyter.org/try" target="_blank" rel="noopener">点这里试用</a>，最后再来决定使用与否。<br><img data-src="https://img-blog.csdnimg.cn/20200311130641901.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>安装前提，在安装Jupyter Notebook时我们需要安装Python3.3以上版本，安装python请参考<a href="https://blog.csdn.net/Bohua101/article/details/104780094" target="_blank" rel="noopener">python安装</a>。</li>
 </ol>
 <p>我这里使用pip命令安装：</p>
 </li>
@@ -330,13 +372,30 @@ Jupyter 内核
 <figure class="highlight groovy"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">C:</span>\Users\lbh19&gt;pip3 install jupyter</span><br><span class="line">或者</span><br><span class="line">pip3 install -i <span class="string">https:</span><span class="comment">//pypi.douban.com/simple/jupyter</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight taggerscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">使用：</span><br><span class="line">启动：C:<span class="symbol">\U</span>sers<span class="symbol">\l</span>bh19&gt;jupyter notebook</span><br></pre></td></tr></table></figure>
-<p>当我们执行完这条命令时，在终端中将会显示一系列notebook的服务器信息，同时它默认会在浏览器中打开Jupyter Notebook网页，我们可以在网页内创建代码（创建的代码文件在输入jupyter notebook命令下的当前目录）<br><img src="https://img-blog.csdnimg.cn/20200311131958656.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img src="https://img-blog.csdnimg.cn/20200311134151475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>我们可以在代码块中输入需要的代码，Alt+回车测试<br><img src="https://img-blog.csdnimg.cn/2020031113450027.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>至此，Jupyter Notebook部署完成。</p>
+<p>当我们执行完这条命令时，在终端中将会显示一系列notebook的服务器信息，同时它默认会在浏览器中打开Jupyter Notebook网页，我们可以在网页内创建代码（创建的代码文件在输入jupyter notebook命令下的当前目录）<br><img data-src="https://img-blog.csdnimg.cn/20200311131958656.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br><img data-src="https://img-blog.csdnimg.cn/20200311134151475.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>我们可以在代码块中输入需要的代码，Alt+回车测试<br><img data-src="https://img-blog.csdnimg.cn/2020031113450027.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L0JvaHVhMTAx,size_16,color_FFFFFF,t_70" alt="在这里插入图片描述"><br>至此，Jupyter Notebook部署完成。</p>
 
     </div>
 
     
     
     
+        
+
+<div>
+<ul class="post-copyright">
+  <li class="post-copyright-author">
+    <strong>本文作者： </strong>十一
+  </li>
+  <li class="post-copyright-link">
+    <strong>本文链接：</strong>
+    <a href="https://shiyi.tech/Python%E4%B9%8B%E5%8F%98%E9%87%8F%E5%92%8C%E5%92%8C%E7%AE%80%E5%8D%95%E7%9A%84%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B.html" title="Python之变量和和简单的数据类型">https://shiyi.tech/Python之变量和和简单的数据类型.html</a>
+  </li>
+  <li class="post-copyright-license">
+    <strong>版权声明： </strong>本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" rel="noopener" target="_blank"><i class="fab fa-fw fa-creative-commons"></i>BY-NC-SA</a> 许可协议。转载请注明出处！
+  </li>
+</ul>
+</div>
+
 
       <footer class="post-footer">
           <div class="post-tags">
@@ -353,8 +412,8 @@ Jupyter 内核
       <i class="fa fa-chevron-left"></i> Linux知识--HTTP协议分析
     </a></div>
       <div class="post-nav-item">
-    <a href="/Python%E4%B9%8B%E5%88%97%E8%A1%A8%EF%BC%88list%EF%BC%89%E7%9A%84%E6%93%8D%E4%BD%9C.html" rel="next" title="Python之列表（list）的操作">
-      Python之列表（list）的操作 <i class="fa fa-chevron-right"></i>
+    <a href="/Docker%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%93%8D%E4%BD%9C%E9%80%BB%E8%BE%91%E3%80%82.html" rel="next" title="Docker的基本操作逻辑。">
+      Docker的基本操作逻辑。 <i class="fa fa-chevron-right"></i>
     </a></div>
     </div>
       </footer>
@@ -368,6 +427,7 @@ Jupyter 内核
 
           </div>
           
+    <div class="comments" id="valine-comments"></div>
 
 <script>
   window.addEventListener('tabs:register', () => {
@@ -443,6 +503,17 @@ Jupyter 内核
       </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Liu-Bohua/Liu-Bohua.github.io" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Liu-Bohua&#x2F;Liu-Bohua.github.io" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="https://blog.csdn.net/Bohua101" title="CSDN → https:&#x2F;&#x2F;blog.csdn.net&#x2F;Bohua101" rel="noopener" target="_blank"><i class="fab fa-crosshairs fa-fw"></i>CSDN</a>
+      </span>
+  </div>
+  <div class="cc-license motion-element" itemprop="license">
+    <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" class="cc-opacity" rel="noopener" target="_blank"><img src="/images/cc-by-nc-sa.svg" alt="Creative Commons"></a>
+  </div>
 
 
 
@@ -464,7 +535,7 @@ Jupyter 内核
 
 <div class="copyright">
   
-  &copy; 
+  &copy; 2019 – 
   <span itemprop="copyrightYear">2020</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
@@ -474,12 +545,33 @@ Jupyter 内核
     <span class="post-meta-item-icon">
       <i class="fa fa-chart-area"></i>
     </span>
+      <span class="post-meta-item-text">站点总字数：</span>
     <span title="站点总字数">32k</span>
 </div>
   <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://muse.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
   </div>
 
         
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
@@ -494,6 +586,7 @@ Jupyter 内核
 
   
   <script src="/lib/anime.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/lozad@1/dist/lozad.min.js"></script>
   <script src="/lib/velocity/velocity.min.js"></script>
   <script src="/lib/velocity/velocity.ui.min.js"></script>
 
@@ -511,6 +604,31 @@ Jupyter 内核
 
 
   
+  <script>
+    (function(){
+      var canonicalURL, curProtocol;
+      //Get the <link> tag
+      var x=document.getElementsByTagName("link");
+		//Find the last canonical URL
+		if(x.length > 0){
+			for (i=0;i<x.length;i++){
+				if(x[i].rel.toLowerCase() == 'canonical' && x[i].href){
+					canonicalURL=x[i].href;
+				}
+			}
+		}
+    //Get protocol
+	    if (!canonicalURL){
+	    	curProtocol = window.location.protocol.split(':')[0];
+	    }
+	    else{
+	    	curProtocol = canonicalURL.split(':')[0];
+	    }
+      //Get current URL if the canonical URL does not exist
+	    if (!canonicalURL) canonicalURL = window.location.href;
+	    //Assign script content. Replace current URL with the canonical URL
+      !function(){var e=/([http|https]:\/\/[a-zA-Z0-9\_\.]+\.baidu\.com)/gi,r=canonicalURL,t=document.referrer;if(!e.test(r)){var n=(String(curProtocol).toLowerCase() === 'https')?"https://sp0.baidu.com/9_Q4simg2RQJ8t7jm9iCKT-xh_/s.gif":"//api.share.baidu.com/s.gif";t?(n+="?r="+encodeURIComponent(document.referrer),r&&(n+="&l="+r)):r&&(n+="?l="+r);var i=new Image;i.src=n}}(window);})();
+  </script>
 
 
 
@@ -529,6 +647,35 @@ Jupyter 内核
   
 
   
+
+
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,link';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
+    });
+    new Valine({
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'wSXwbA4jcrlCbySQw29hr0WU-gzGzoHsz',
+      appKey     : 'ih5HbNbXMP4FN2Vj6HL5vuCL',
+      placeholder: "Just go go",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : false,
+      lang       : '' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
+    });
+  }, window.Valine);
+});
+</script>
 
 <script src="/live2dw/lib/L2Dwidget.min.js?094cbace49a39548bed64abff5988b05"></script><script>L2Dwidget.init({"pluginRootPath":"live2dw/","pluginJsPath":"lib/","pluginModelPath":"assets/","tagMode":false,"model":{"jsonPath":"/live2dw/assets/haruto.model.json"},"display":{"position":"right","width":150,"height":300},"mobile":{"show":true},"log":false});</script></body>
 </html>
